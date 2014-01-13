@@ -3,7 +3,7 @@ from django.conf.urls import patterns, include, url
 from django.contrib import admin
 admin.autodiscover()
 
-from guestbook.messages.views import RandomMessageDetailView
+from guestbook.entries.views import RandomMessageDetailView
 
 urlpatterns = patterns('',
     # Examples:
