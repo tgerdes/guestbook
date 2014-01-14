@@ -35,7 +35,6 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'south',
     'guestbook.entries',
-    'django_dropbox',
 )
 
 MIDDLEWARE_CLASSES = (
