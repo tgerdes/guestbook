@@ -1,0 +1,28 @@
+{% load staticfiles %}
+<html>
+<head>
+<script type="text/javascript" src="//code.jquery.com/jquery-1.10.2.min.js"></script>
+<script type="text/javascript" src="{% static "capture.js" %}"></script>
+<link type="text/css" rel="stylesheet" href="{% static "capture.css" %}">
+</head>
+    <body>
+        <div class="content">
+        <div class="capture">
+          <video autoplay></video>
+          <canvas width="640px" height="480px" style="display: none"></canvas>
+        </div>
+        <div class="preview">
+            <div>
+                <img src="">
+            </div>
+            <div>
+                <textarea id="comment" placeholder="Enter a comment"></textarea>
+            </div>
+            <div>
+                <button id="cancel">Cancel</button>
+                <button id="submit">Submit</button>
+            </div>
+        </div>
+        </div>
+    </body>
+</html>

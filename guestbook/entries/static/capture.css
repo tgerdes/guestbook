@@ -1,0 +1,26 @@
+video {
+    -moz-transform: scale(-1, 1);
+    -webkit-transform: scale(-1, 1);
+    -o-transform: scale(-1, 1);
+    transform: scale(-1, 1);
+    filter: FlipH;
+}
+div.content {
+  width:  640px;
+  margin-left: auto;
+  margin-right: auto;
+}
+canvas {
+  width:  640px;
+  height: 480px;
+}
+
+div.preview {
+    display: none;
+}
+
+textarea {
+    margin-top: 10px;
+    height: 150px;
+    width: 640px;
+}
