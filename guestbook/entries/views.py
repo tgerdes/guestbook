@@ -7,6 +7,7 @@ from dropbox.client import DropboxClient
 
 from .models import Message
 
+
 class RandomMessageDetailView(DetailView):
     model = Message
 

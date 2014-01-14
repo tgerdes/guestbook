@@ -1,0 +1,28 @@
+{
+    "boss": true,
+    "curly": true,
+    "eqeqeq": true,
+    "eqnull": true,
+    "expr": true,
+    "immed": true,
+    "noarg": true,
+    "onevar": true,
+    "quotmark": "double",
+    "smarttabs": true,
+    "trailing": true,
+    "undef": true,
+    "unused": true,
+    "globals": {
+        "ArrayBuffer": false, 
+        "Blob": false, 
+        "FormData": false, 
+        "Uint8Array": false, 
+        "XMLHttpRequest": false, 
+        "atob": false,
+        "document": false,
+        "jQuery": false,
+        "navigator": false,
+        "window": false 
+    }
+}
+
