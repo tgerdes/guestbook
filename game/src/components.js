@@ -46,10 +46,11 @@ Crafty.c('Bush', {
 // This is the player-controlled character
 Crafty.c('PlayerCharacter', {
   init: function() {
-    this.requires('Actor, Fourway, Color, Collision')
+    this.requires('Actor, Fourway, Color, Collision, Keyboard')
       .fourway(4)
       .color('rgb(20, 75, 40)')
-      .stopOnSolids();
+      .stopOnSolids()
+      .bind('KeyDown', this.handleSpace);
   },
   
   // Registers a stop-movement function to be called when
@@ -62,10 +63,22 @@ Crafty.c('PlayerCharacter', {
  
   // Stops the movement
   stopMovement: function() {
+    console.log("Stopping movement");
     this._speed = 0;
     if (this._movement) {
       this.x -= this._movement.x;
       this.y -= this._movement.y;
+    }
+  },
+  
+  handleSpace: function(e) {
+    console.log("Something pressed " + e);
+    if(this.isDown('SPACE')) {
+      this.x = Math.floor(Math.random() * Game.map_size.windowWidth);
+      if (this.x < 1) this.x = 1;
+      if (this.x >= Game.map_size.windowWidth - 1) this.x = Game.map_size.windowWidth - 2;
+      this.x = this.x * Game.map_size.tile.width;
+      console.log("Space pressed! moved x to" + this.x);
     }
   }
 });
