@@ -5,8 +5,8 @@
 
 Game = {
   map_size: {
-    windowWidth: 32,
-    windowHeight: 24,
+    windowWidth: 24,
+    windowHeight: 18,
     width:  64,
     height: 64,
     tile: {
@@ -49,15 +49,13 @@ Game = {
       }
     }
     // Start crafty and set a background color so that we can see it's working
-    Crafty.init(Game.getWidth(), Game.getHeight());
+    Crafty.init(Game.getViewWidth(), Game.getViewHeight());
     Crafty.background('rgb(155,185,22)');
-    Crafty.viewport.height = Game.getViewHeight();
-    Crafty.viewport.width = Game.getViewWidth();
-    Crafty.viewport.bounds = {min:{x:256, y:0}, max:{x:Game.getViewWidth() + 256, y:Game.getViewHeight()}};
+    
     // Place a tree at every edge square on our grid of 16x16 tiles
     for (var x = 0; x < Game.map_size.width; x++) {
       for (var y = 0; y < Game.map_size.height; y++) {
-        var at_edge = x == 0 || x == Game.map_size.width - 1 || y == 0 || y == Game.map_size.height - 1;
+        var at_edge = x == 0 || x == Game.map_size.windowWidth - 1 || y == 0 || y == Game.map_size.windowHeight - 1;
  
         if (at_edge) {
           Crafty.e('Tree').at(x, y);
@@ -66,51 +64,6 @@ Game = {
         }
       }
     }
-//     Game.drawMap();
-    
-    // This is the player-controlled character
-    Crafty.c('PlayerCharacter', {
-      init: function() {
-        this.requires('Actor, Fourway, Color')
-          .fourway(4)
-          .color('rgb(20, 75, 40)');
-      }
-    });
-  
-    document.onkeydown = function(e) {
-      e = e || window.event;
-      var update = false;
-      if(e.key == Crafty.keys['LEFT_ARROW']) {
-        Game.map_position.x = Math.max(0, Game.map_position.x - 1);
-        update = true;
-      } else if (e.key == Crafty.keys['RIGHT_ARROW']) {
-        Game.map_position.x = Math.min(Game.map_size.width - Game.map_size.windowWidth, Game.map_position.x + 1);
-        update = true;
-      } else if (e.key == Crafty.keys['UP_ARROW']) {
-        Game.map_position.y = Math.max(0, Game.map_position.y - 1);
-        update = true;
-      } else if (e.key == Crafty.keys['DOWN_ARROW']) {
-        Game.map_position.y = Math.min(Game.map_size.height - Game.map_size.windowHeight, Game.map_position.y + 1);
-        update = true;
-      }
-      if (update) {
-//         Game.drawMap();
-      }
-    };
-  },
-  
-//   drawMap: function() {
-//     for (var x = 0; x < Game.map_size.windowWidth; x++) {
-//       for (var y = 0; y < Game.map_size.windowHeight; y++) {
-//         Crafty.e('2D, Canvas, Color')
-//           .attr({
-//             x: x * Game.map_size.tile.width,
-//             y: y * Game.map_size.tile.height,
-//             w: Game.map_size.tile.width,
-//             h: Game.map_size.tile.height
-//           })
-//           .color(Game.map[x + Game.map_position.x][y + Game.map_position.y]);
-//       }
-//     }    
-//   }
+    Crafty.e("PlayerCharacter").at(5, 5);
+  }
 }
