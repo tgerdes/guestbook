@@ -1,0 +1,5 @@
+GenericHero.png - http://opengameart.org/content/base-character-spritesheet-16x16
+32x40 sprite base.png - http://opengameart.org/content/sprite-base-32%C3%9740
+russpuppy_rpg_art_pack.zip - http://opengameart.org/content/rpg-art-pack
+human_sprites_0.png & human_sprites_hair.png - http://opengameart.org/content/32-pixel-human-sprites
+ada_0_0.png & dante_0_0.png - http://opengameart.org/content/lpc-girl-variant-2
