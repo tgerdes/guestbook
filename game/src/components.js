@@ -42,6 +42,80 @@ Crafty.c('Bush', {
       .color('rgb(20, 185, 40)');
   },
 });
+
+Crafty.c('GuestText', {
+  count: 0,
+  init: function() {
+    this.requires('2D, Canvas, Text')
+      .bind('RenderScene', this.onRender);
+  },
+  
+  onRender: function() {
+    if (this.count >= Game.constants.textDuration) {
+      console.log('Destroying text');
+      this.destroy();
+    }
+    this.count++;
+  }
+})
+
+Crafty.c('Guest', {
+  xDiff: 0,
+  yDiff: 0,
+  renderCount: 0,
+  name: "Steve",
+  saying: "Steeeeeve!",
+  
+  init: function() {
+    this.requires('Actor, Color, Collision')
+      .color('rgb(180, 35, 35)')
+      .bind('RenderScene', this.onRender)
+      .stopOnSolids();
+  },
+  
+  onRender: function() {
+    if (this.renderCount % Game.map_size.tile.width == 0) {
+      var dir = Math.random() > 0.5;
+      if (dir) {
+        this.xDiff = (Math.random() * 3);
+        if (this.xDiff > 2.8) this.xDiff = 1;
+        else if (this.xDiff > 0.2) this.xDiff = 0;
+        else this.xDiff = -1;
+        this.yDiff = 0;
+      } else {
+        this.yDiff = (Math.random() * 3);
+        if (this.yDiff > 2.8) this.yDiff = 1;
+        else if (this.yDiff > 0.2) this.yDiff = 0;
+        else this.yDiff = -1;
+        this.xDiff = 0;
+      }
+    }
+    
+    this.renderCount++;
+    this.x = Math.max(Game.map_size.tile.width, this.x + this.xDiff);
+    this.x = Math.min((Game.map_size.windowWidth - 2) * Game.map_size.tile.width, this.x);
+    this.y = Math.max(Game.map_size.tile.height, this.y + this.yDiff);
+    this.y = Math.min((Game.map_size.windowHeight - 2) * Game.map_size.tile.height, this.y);
+  },
+
+  stopOnSolids: function() {
+    this.onHit('Solid', this.stopMovement);
+    this.onHit('Guest', this.avoidGuest);
+    this.onHit('PlayerCharacter', this.stopMovement);
+    return this;
+  },
+ 
+  // Stops the movement
+  stopMovement: function() {
+    this.xDiff = 0;
+    this.yDiff = 0;
+  },
+  
+  avoidGuest: function() {
+    this.xDiff = -this.xDiff;
+    this.yDiff = -this.yDiff;
+  }
+})
     
 // This is the player-controlled character
 Crafty.c('PlayerCharacter', {
@@ -57,7 +131,6 @@ Crafty.c('PlayerCharacter', {
   //  this entity hits an entity with the "Solid" component
   stopOnSolids: function() {
     this.onHit('Solid', this.stopMovement);
-  
     return this;
   },
  
@@ -72,13 +145,13 @@ Crafty.c('PlayerCharacter', {
   },
   
   handleSpace: function(e) {
-    console.log("Something pressed " + e);
     if(this.isDown('SPACE')) {
-      this.x = Math.floor(Math.random() * Game.map_size.windowWidth);
-      if (this.x < 1) this.x = 1;
-      if (this.x >= Game.map_size.windowWidth - 1) this.x = Game.map_size.windowWidth - 2;
-      this.x = this.x * Game.map_size.tile.width;
-      console.log("Space pressed! moved x to" + this.x);
+      var result = this.hit('Guest');
+      if (result.length > 0) {
+        var guest = result[0].obj;
+        console.log("Hitting guest " + guest.name);
+        Crafty.e("GuestText").attr({ x: guest.x, y: guest.y }).text(guest.saying);
+      }
     }
   }
 });

@@ -15,6 +15,10 @@ Game = {
     }
   },
   
+  constants: {
+    textDuration: 250,
+  },
+  
   map: {},
   
   map_position: {
@@ -65,5 +69,9 @@ Game = {
       }
     }
     Crafty.e("PlayerCharacter").at(5, 5);
+    Crafty.e("Guest").at(7,3);
+    Crafty.e("Guest").at(1,1);
+    Crafty.e("Guest").at(5,8);
+    Crafty.e("Guest").at(2,2);
   }
 }
