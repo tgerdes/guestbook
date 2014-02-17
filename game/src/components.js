@@ -43,21 +43,33 @@ Crafty.c('Bush', {
   },
 });
 
+//function GuestText () {
 Crafty.c('GuestText', {
   count: 0,
+  
   init: function() {
     this.requires('2D, Canvas, Text')
-      .bind('RenderScene', this.onRender);
+      .bind('RenderScene', this.onRender)
+      .textColor('#FFFFFF');
+      this.visible = false
+  },
+  
+  start: function() {
+    this.count = 0;
+    this.visible = true;
   },
   
   onRender: function() {
+    if (!this.visible) {
+      return;
+    }
     if (this.count >= Game.constants.textDuration) {
-      console.log('Destroying text');
-      this.destroy();
+      console.log('making text invisible');
+      this.visible = false;
     }
     this.count++;
-  }
-})
+  },
+});
 
 Crafty.c('Guest', {
   xDiff: 0,
@@ -65,12 +77,17 @@ Crafty.c('Guest', {
   renderCount: 0,
   name: "Steve",
   saying: "Steeeeeve!",
+  myText: null,
   
   init: function() {
     this.requires('Actor, Color, Collision')
       .color('rgb(180, 35, 35)')
       .bind('RenderScene', this.onRender)
       .stopOnSolids();
+    this.myText = Crafty.e('GuestText');
+    this.myText.text(this.saying);
+    this.attach(this.myText);
+    this.myText.shift(0, -16, 0, 0);
   },
   
   onRender: function() {
@@ -96,6 +113,8 @@ Crafty.c('Guest', {
     this.x = Math.min((Game.map_size.windowWidth - 2) * Game.map_size.tile.width, this.x);
     this.y = Math.max(Game.map_size.tile.height, this.y + this.yDiff);
     this.y = Math.min((Game.map_size.windowHeight - 2) * Game.map_size.tile.height, this.y);
+    
+//     this.myText.attr({ x: this.x, y: this.y - Game.map_size.tile.height / 2 });
   },
 
   stopOnSolids: function() {
@@ -114,6 +133,11 @@ Crafty.c('Guest', {
   avoidGuest: function() {
     this.xDiff = -this.xDiff;
     this.yDiff = -this.yDiff;
+  },
+  
+  showText: function() {
+    console.log('showing text ' + this.myText.text + " at " + this.x + ", " + this.y);
+    this.myText.start();
   }
 })
     
@@ -150,7 +174,7 @@ Crafty.c('PlayerCharacter', {
       if (result.length > 0) {
         var guest = result[0].obj;
         console.log("Hitting guest " + guest.name);
-        Crafty.e("GuestText").attr({ x: guest.x, y: guest.y }).text(guest.saying);
+        guest.showText();
       }
     }
   }
