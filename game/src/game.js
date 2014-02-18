@@ -45,33 +45,19 @@ Game = {
   
   // Initialize and start our game
   start: function() {
-    Game.map = new Array();
-    for (var x = 0; x < Game.map_size.width; x++) {
-      Game.map[x] = new Array();
-      for (var y = 0; y < Game.map_size.height; y++) {
-        Game.map[x][y] = 'rgb(0,200,260)';
-      }
-    }
+//     Game.map = new Array();
+//     for (var x = 0; x < Game.map_size.width; x++) {
+//       Game.map[x] = new Array();
+//       for (var y = 0; y < Game.map_size.height; y++) {
+//         Game.map[x][y] = 'rgb(0,200,260)';
+//       }
+//     }
     // Start crafty and set a background color so that we can see it's working
     Crafty.init(Game.getViewWidth(), Game.getViewHeight());
-    Crafty.background('rgb(155,185,22)');
-    
-    // Place a tree at every edge square on our grid of 16x16 tiles
-    for (var x = 0; x < Game.map_size.width; x++) {
-      for (var y = 0; y < Game.map_size.height; y++) {
-        var at_edge = x == 0 || x == Game.map_size.windowWidth - 1 || y == 0 || y == Game.map_size.windowHeight - 1;
- 
-        if (at_edge) {
-          Crafty.e('Tree').at(x, y);
-        } else if (Math.random() < 0.06) {
-          Crafty.e('Bush').at(x, y);
-        }
-      }
-    }
-    Crafty.e("PlayerCharacter").at(5, 5);
-    Crafty.e("Guest").at(7,3);
-    Crafty.e("Guest").at(1,1);
-    Crafty.e("Guest").at(5,8);
-    Crafty.e("Guest").at(2,2);
+    Crafty.background('rgb(60, 140, 20)');
+    // Simply start the "Loading" scene to get things going
+    Crafty.scene('Loading');
   }
-}
+},
+
+$text_css = {'family': 'Arial', 'color': 'white', 'text-align': 'center' }

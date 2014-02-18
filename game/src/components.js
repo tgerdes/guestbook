@@ -11,7 +11,7 @@ Crafty.c('Grid', {
   // Locate this entity at the given position on the grid
   at: function(x, y) {
     if (x === undefined && y === undefined) {
-      return { x: this.x/Game.map_grid.tile.width, y: this.y/Game.map_grid.tile.height }
+      return { x: this.x/Game.map_size.tile.width, y: this.y/Game.map_size.tile.height }
     } else {
       this.attr({ x: x * Game.map_size.tile.width, y: y * Game.map_size.tile.height });
       return this;
@@ -30,16 +30,16 @@ Crafty.c('Actor', {
 // A Tree is just an Actor with a certain color
 Crafty.c('Tree', {
   init: function() {
-    this.requires('Actor, Color, Solid')
-      .color('rgb(20, 125, 40)');
+    this.requires('Actor, Solid, spr_tree')
+      .attr({w: 32, h: 32});
   },
 });
  
 // A Bush is just an Actor with a certain color
 Crafty.c('Bush', {
   init: function() {
-    this.requires('Actor, Color')
-      .color('rgb(20, 185, 40)');
+    this.requires('Actor, spr_bush')
+      .attr({w: 32, h: 32});
   },
 });
 
@@ -48,9 +48,11 @@ Crafty.c('GuestText', {
   count: 0,
   
   init: function() {
-    this.requires('2D, Canvas, Text')
+    this.requires('2D, Canvas, Color, Text')
       .bind('RenderScene', this.onRender)
-      .textColor('#FFFFFF');
+      .textColor('#000000')
+      .textFont({ size: '18px'})
+      .color('rgb(255, 255, 255)');
       this.visible = false
   },
   
@@ -60,14 +62,13 @@ Crafty.c('GuestText', {
   },
   
   onRender: function() {
-    if (!this.visible) {
-      return;
+    if (this.visible) {
+      if (this.count >= Game.constants.textDuration) {
+        console.log('making text invisible');
+        this.visible = false;
+      }
+      this.count++;
     }
-    if (this.count >= Game.constants.textDuration) {
-      console.log('making text invisible');
-      this.visible = false;
-    }
-    this.count++;
   },
 });
 
@@ -80,14 +81,18 @@ Crafty.c('Guest', {
   myText: null,
   
   init: function() {
-    this.requires('Actor, Color, Collision')
-      .color('rgb(180, 35, 35)')
+    this.requires('Actor, Collision, spr_guest, SpriteAnimation')
       .bind('RenderScene', this.onRender)
-      .stopOnSolids();
+      .stopOnSolids()
+      .attr({w: 32, h: 32})
+      .reel('GuestUp', 600, 0, 0, 3)
+      .reel('GuestRight', 600, 0, 1, 3)
+      .reel('GuestDown', 600, 0, 2, 3)
+      .reel('GuestLeft', 600, 0, 3, 3);
     this.myText = Crafty.e('GuestText');
     this.myText.text(this.saying);
     this.attach(this.myText);
-    this.myText.shift(0, -16, 0, 0);
+    this.myText.shift(0, -24, 0, 0);
   },
   
   onRender: function() {
@@ -95,17 +100,26 @@ Crafty.c('Guest', {
       var dir = Math.random() > 0.5;
       if (dir) {
         this.xDiff = (Math.random() * 3);
-        if (this.xDiff > 2.8) this.xDiff = 1;
-        else if (this.xDiff > 0.2) this.xDiff = 0;
-        else this.xDiff = -1;
+        if (this.xDiff > 2.8) {
+          this.xDiff = 1;
+        } else if (this.xDiff > 0.2) {
+          this.xDiff = 0;
+        } else {
+          this.xDiff = -1;
+        }
         this.yDiff = 0;
       } else {
         this.yDiff = (Math.random() * 3);
-        if (this.yDiff > 2.8) this.yDiff = 1;
-        else if (this.yDiff > 0.2) this.yDiff = 0;
-        else this.yDiff = -1;
+        if (this.yDiff > 2.8) {
+          this.yDiff = 1;
+        } else if (this.yDiff > 0.2) {
+          this.yDiff = 0;
+        } else {
+          this.yDiff = -1;
+        }
         this.xDiff = 0;
       }
+      this.setAnimation();
     }
     
     this.renderCount++;
@@ -133,10 +147,25 @@ Crafty.c('Guest', {
   avoidGuest: function() {
     this.xDiff = -this.xDiff;
     this.yDiff = -this.yDiff;
+    this.setAnimation();
+  },
+  
+  setAnimation: function() {
+    if (this.xDiff > 0) {
+      this.animate('GuestRight', -1);
+    } else if (this.xDiff < 0) {
+      this.animate('GuestLeft', -1);
+    } else if (this.yDiff > 0) {
+      this.animate('GuestDown', -1);
+    } else if (this.yDiff < 0) {
+      this.animate('GuestUp', -1);
+    } else {
+      this.pauseAnimation();
+    }
   },
   
   showText: function() {
-    console.log('showing text ' + this.myText.text + " at " + this.x + ", " + this.y);
+    console.log('showing text ' + this.myText._text + " at " + this.x + ", " + this.y);
     this.myText.start();
   }
 })
@@ -144,10 +173,14 @@ Crafty.c('Guest', {
 // This is the player-controlled character
 Crafty.c('PlayerCharacter', {
   init: function() {
-    this.requires('Actor, Fourway, Color, Collision, Keyboard')
+    this.requires('Actor, Fourway, spr_player, Collision, Keyboard, SpriteAnimation')
       .fourway(4)
-      .color('rgb(20, 75, 40)')
       .stopOnSolids()
+      .reel('PlayerUp', 600, [[2,0], [2,1], [2,2], [2,3]])
+      .reel('PlayerRight', 600, [[3,0], [3,1], [3,2], [3,3]])
+      .reel('PlayerDown', 600, [[0,0], [0,1], [0,2], [0,3]])
+      .reel('PlayerLeft', 600, [[1,0], [1,1], [1,2], [1,3]])
+      .bind('NewDirection', this.changeDirection)
       .bind('KeyDown', this.handleSpace);
   },
   
@@ -176,6 +209,20 @@ Crafty.c('PlayerCharacter', {
         console.log("Hitting guest " + guest.name);
         guest.showText();
       }
+    }
+  },
+  
+  changeDirection: function(data) {
+    if (data.x > 0) {
+        this.animate('PlayerRight', -1);
+    } else if (data.x < 0) {
+        this.animate('PlayerLeft', -1);
+    } else if (data.y > 0) {
+        this.animate('PlayerDown', -1);
+    } else if (data.y < 0) {
+        this.animate('PlayerUp', -1);
+    } else {
+        this.pauseAnimation();
     }
   }
 });
