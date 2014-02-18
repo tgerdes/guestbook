@@ -12,18 +12,25 @@ Crafty.scene('Game', function() {
   }
  
   // Player character, placed at 5, 5 on our grid
-  this.player = Crafty.e('PlayerCharacter').at(5, 5);
+  this.player = Crafty.e('PlayerCharacter').at(Game.map.startX, Game.map.startY);
   this.occupied[this.player.at().x][this.player.at().y] = true;
  
   // Place a tree at every edge square on our grid of 16x16 tiles
   for (var x = 0; x <Game.map_size.windowWidth; x++) {
     for (var y = 0; y < Game.map_size.windowHeight; y++) {
       var at_edge = x == 0 || x == Game.map_size.windowWidth - 1 || y == 0 || y == Game.map_size.windowHeight - 1;
+      var at_door = (y == Game.map.door || y == Game.map.door + 1)
+            && ((x == 0 && Game.map.id > 0) 
+            || (x == Game.map_size.windowWidth - 1 && Game.map.id < Game.map.count));
  
       if (at_edge) {
-        // Place a tree entity at the current tile
-        Crafty.e('Tree').at(x, y);
-        this.occupied[x][y] = true;
+        if (at_door) {
+          Crafty.e('Door').at(x + 0.5, y);
+        } else {
+          // Place a tree entity at the current tile
+          Crafty.e('Tree').at(x, y);
+          this.occupied[x][y] = true;
+        }
       } else if (Math.random() < 0.06 && !this.occupied[x][y]) {
         // Place a bush entity at the current tile
         Crafty.e('Bush').at(x, y);

@@ -26,6 +26,13 @@ Crafty.c('Actor', {
     this.requires('2D, Canvas, Grid');
   },
 });
+
+Crafty.c('Door', {
+  init: function() {
+    this.requires('Actor')
+      .attr({w: 16, h: 32});
+  }
+})
  
 // A Tree is just an Actor with a certain color
 Crafty.c('Tree', {
@@ -54,6 +61,7 @@ Crafty.c('GuestText', {
       .textFont({ size: '18px'})
       .color('rgb(255, 255, 255)');
       this.visible = false
+      this.z = 2;
   },
   
   start: function() {
@@ -182,12 +190,14 @@ Crafty.c('PlayerCharacter', {
       .reel('PlayerLeft', 600, [[1,0], [1,1], [1,2], [1,3]])
       .bind('NewDirection', this.changeDirection)
       .bind('KeyDown', this.handleSpace);
+    this.z = 1;
   },
   
   // Registers a stop-movement function to be called when
   //  this entity hits an entity with the "Solid" component
   stopOnSolids: function() {
     this.onHit('Solid', this.stopMovement);
+    this.onHit('Door', this.changeScene);
     return this;
   },
  
@@ -199,6 +209,19 @@ Crafty.c('PlayerCharacter', {
       this.x -= this._movement.x;
       this.y -= this._movement.y;
     }
+  },
+  
+  changeScene: function() {
+    if (this.x > Game.getViewWidth() / 2) {
+      Game.map.id++;
+      Game.map.startX = 1;
+    } else {
+      Game.map.id--;
+      Game.map.startX = Game.map_size.windowWidth - 2;
+    }
+    Game.map.startY = this.at().y;
+    console.log("Restarting with map id " + Game.map.id);
+    Crafty.scene('Game');
   },
   
   handleSpace: function(e) {

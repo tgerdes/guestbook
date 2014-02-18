@@ -19,13 +19,13 @@ Game = {
     textDuration: 250,
   },
   
-  map: {},
-  
-  map_position: {
-    x: 0,
-    y: 0
+  map: {
+    id: 0,
+    count: 2,
+    door: 8,
+    startX: 11,
+    startY: 8
   },
-  
   
   getWidth: function() {
     return Game.map_size.width * Game.map_size.tile.width;
@@ -45,13 +45,6 @@ Game = {
   
   // Initialize and start our game
   start: function() {
-//     Game.map = new Array();
-//     for (var x = 0; x < Game.map_size.width; x++) {
-//       Game.map[x] = new Array();
-//       for (var y = 0; y < Game.map_size.height; y++) {
-//         Game.map[x][y] = 'rgb(0,200,260)';
-//       }
-//     }
     // Start crafty and set a background color so that we can see it's working
     Crafty.init(Game.getViewWidth(), Game.getViewHeight());
     Crafty.background('rgb(60, 140, 20)');
