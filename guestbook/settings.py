@@ -35,6 +35,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'south',
     'guestbook.entries',
+    'guestbook.game',
 )
 
 MIDDLEWARE_CLASSES = (
