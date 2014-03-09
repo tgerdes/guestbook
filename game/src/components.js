@@ -206,10 +206,10 @@ Crafty.c('PlayerCharacter', {
     this.requires('Actor, Fourway, spr_player, Collision, Keyboard, SpriteAnimation')
       .fourway(4)
       .stopOnSolids()
-      .reel('PlayerUp', 600, [[2,0], [2,1], [2,2], [2,3]])
-      .reel('PlayerRight', 600, [[3,0], [3,1], [3,2], [3,3]])
-      .reel('PlayerDown', 600, [[0,0], [0,1], [0,2], [0,3]])
-      .reel('PlayerLeft', 600, [[1,0], [1,1], [1,2], [1,3]])
+      .reel('PlayerUp', 600, 0, 0, 3)
+      .reel('PlayerRight', 600, 0, 1, 3)
+      .reel('PlayerDown', 600, 0, 2, 3)
+      .reel('PlayerLeft', 600, 0, 3, 3)
       .bind('NewDirection', this.changeDirection)
       .bind('KeyDown', this.handleSpace);
     this.z = 1;

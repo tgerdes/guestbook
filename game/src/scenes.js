@@ -41,11 +41,17 @@ Crafty.scene('Game', function() {
  
   // Generate up to 10 NPCs on the map in random locations
   var max_npcs = 10;
-  for (var x = 0; x < Game.map_size.windowWidth; x++) {
-    for (var y = 0; y < Game.map_size.windowHeight; y++) {
-      if (Math.random() < 0.02) {
-        if (Crafty('Guest').length < max_npcs && !this.occupied[x][y]) {
+  for (var x = 0; x < Game.map_size.windowWidth - 2; x++) {
+    for (var y = 0; y < Game.map_size.windowHeight - 3; y++) {
+      if (Math.random() < 0.06) {
+        var occupied = this.occupied[x][y] || this.occupied[x][y+1] || this.occupied[x][y+2];
+        if (Crafty('Guest').length < max_npcs && !occupied) {
           Crafty.e('Guest').at(x, y);
+          for (var i = 0; i < 2; i++) {
+            for (var j = 0; j < 3; j++) {
+              this.occupied[x + i][y + j] = true;
+            }
+          }
         }
       }
     }
@@ -91,7 +97,7 @@ Crafty.scene('Loading', function(){
   Crafty.load([
         'assets/16x16_forest_2.gif',
         'assets/dante_0_0.png',
-        'assets/hunter.png',
+        'assets/body-test.png',
         Game.guests.files[0],
         Game.guests.files[1]
         ], function(){
@@ -108,17 +114,14 @@ Crafty.scene('Loading', function(){
       spr_village: [0, 1],
     });
     
-    Crafty.sprite(16, 'assets/hunter.png', {
-      spr_guest:  [0, 2],
-    }, 0, 2);
+    Crafty.sprite(48, 96, 'assets/body-test.png', {
+      spr_guest:  [0, 0],
+    }, 0, 0);
     
-    Crafty.sprite(32, 32, 'assets/dante_0_0.png', {
+    Crafty.sprite(48, 96, 'assets/andrew.png', {
       spr_player: [0,0],
     }, 0, 1);
     
-    Crafty.sprite('assets/face-fullsize.png', {
-      spr_face: [0,0,330,450],
-    });
     for (var i = 0; i < Game.guests.files.length; i++) {
       Crafty.face('FaceSprite' + i, Game.guests.files[i]);
       Crafty.c('face' + i, {
