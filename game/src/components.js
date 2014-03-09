@@ -80,6 +80,12 @@ Crafty.c('GuestText', {
   },
 });
 
+Crafty.c('GuestFace', {
+  init: function() {
+    this.requires('2D, Canvas, Sprite');
+  }
+});
+
 Crafty.c('Guest', {
   xDiff: 0,
   yDiff: 0,
@@ -87,12 +93,13 @@ Crafty.c('Guest', {
   name: "Steve",
   saying: "Steeeeeve!",
   myText: null,
+  myFace: null,
   
   init: function() {
     this.requires('Actor, Collision, spr_guest, SpriteAnimation')
       .bind('RenderScene', this.onRender)
       .stopOnSolids()
-      .attr({w: 32, h: 32})
+      .attr({w: 48, h: 96})
       .reel('GuestUp', 600, 0, 0, 3)
       .reel('GuestRight', 600, 0, 1, 3)
       .reel('GuestDown', 600, 0, 2, 3)
@@ -101,6 +108,21 @@ Crafty.c('Guest', {
     this.myText.text(this.saying);
     this.attach(this.myText);
     this.myText.shift(0, -24, 0, 0);
+    this.myFace = Crafty.e('GuestFace');
+    
+    var faceIndex = Game.guests.count++ % Game.guests.files.length;
+//     var faceImage = Crafty.asset(Game.guests.files[faceIndex]);
+//     var faceImage = Crafty.e('2D, Canvas, Image').image(Game.guests.files[faceIndex]);
+//     this.myFace.img = faceImage; //Game.guests.sprites[Game.guests.count++ % Game.guests.files.length];
+//     this.myFace.attr({w:42, h:60});
+    this.myFace = Crafty.e('face' + faceIndex);
+    this.attach(this.myFace);
+    this.myFace.w = 48;
+    this.myFace.h = 66;
+    this.myFace.shift(0, -6, 0, 0);
+    this.myFace.ready = true;
+    this.myFace.trigger("Invalidate");
+    console.log('myFace is ' + this.myFace + ' with image ' + this.myFace.img);
   },
   
   onRender: function() {

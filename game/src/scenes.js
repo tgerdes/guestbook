@@ -91,7 +91,9 @@ Crafty.scene('Loading', function(){
   Crafty.load([
         'assets/16x16_forest_2.gif',
         'assets/dante_0_0.png',
-        'assets/hunter.png'
+        'assets/hunter.png',
+        Game.guests.files[0],
+        Game.guests.files[1]
         ], function(){
     // Once the image is loaded...
  
@@ -113,6 +115,20 @@ Crafty.scene('Loading', function(){
     Crafty.sprite(32, 32, 'assets/dante_0_0.png', {
       spr_player: [0,0],
     }, 0, 1);
+    
+    Crafty.sprite('assets/face-fullsize.png', {
+      spr_face: [0,0,330,450],
+    });
+    for (var i = 0; i < Game.guests.files.length; i++) {
+      Crafty.face('FaceSprite' + i, Game.guests.files[i]);
+      Crafty.c('face' + i, {
+        myId: i,
+        init: function() {
+          this.requires('2D, Canvas, FaceSprite' + this.myId);
+          console.log('Initializing face' + this.myId);
+        }
+      });
+    }
     // Now that our sprites are ready to draw, start the game
     Crafty.scene('Game');
   });
