@@ -29,7 +29,7 @@ Game = {
   
   guests: {
     count: 0,
-    files: ['assets/face-fullsize.png', 'assets/face-c.png'],
+    files: ['assets/face-e.png', 'assets/face-c.png', 'assets/face-e-sq.png'],
     sprites: new Array(),
   },
   
