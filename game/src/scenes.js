@@ -120,7 +120,7 @@ Crafty.scene('Loading', function(){
     
     Crafty.sprite(48, 96, 'assets/andrew.png', {
       spr_player: [0,0],
-    }, 0, 1);
+    }, 0, 0);
     
     for (var i = 0; i < Game.guests.files.length; i++) {
       Crafty.face('FaceSprite' + i, Game.guests.files[i]);
