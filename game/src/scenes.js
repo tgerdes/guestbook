@@ -19,7 +19,7 @@ Crafty.scene('Game', function() {
   for (var x = 0; x <Game.map_size.windowWidth; x++) {
     for (var y = 0; y < Game.map_size.windowHeight; y++) {
       var at_edge = x == 0 || x == Game.map_size.windowWidth - 1 || y == 0 || y == Game.map_size.windowHeight - 1;
-      var at_door = (y == Game.map.door || y == Game.map.door + 1)
+      var at_door = (y >= Game.map.door - 2 && y <= Game.map.door + 2 )
             && ((x == 0 && Game.map.id > 0) 
             || (x == Game.map_size.windowWidth - 1 && Game.map.id < Game.map.count));
  

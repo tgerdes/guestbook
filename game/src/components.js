@@ -111,15 +111,10 @@ Crafty.c('Guest', {
     this.myFace = Crafty.e('GuestFace');
     
     var faceIndex = Game.guests.count++ % Game.guests.files.length;
-//     var faceImage = Crafty.asset(Game.guests.files[faceIndex]);
-//     var faceImage = Crafty.e('2D, Canvas, Image').image(Game.guests.files[faceIndex]);
-//     this.myFace.img = faceImage; //Game.guests.sprites[Game.guests.count++ % Game.guests.files.length];
-//     this.myFace.attr({w:42, h:60});
     this.myFace = Crafty.e('face' + faceIndex);
     this.attach(this.myFace);
     this.myFace.w = 48;
     this.myFace.h = 66;
-    this.myFace.shift(0, -6, 0, 0);
     this.myFace.ready = true;
     this.myFace.trigger("Invalidate");
     console.log('myFace is ' + this.myFace + ' with image ' + this.myFace.img);
