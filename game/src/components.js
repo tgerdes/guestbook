@@ -157,7 +157,7 @@ Crafty.c('Guest', {
   },
 
   stopOnSolids: function() {
-    this.onHit('Solid', this.stopMovement);
+    this.onHit('Solid', this.avoidGuest);
     this.onHit('Guest', this.avoidGuest);
     this.onHit('PlayerCharacter', this.stopMovement);
     return this;
