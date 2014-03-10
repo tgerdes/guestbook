@@ -123,29 +123,33 @@ Crafty.c('Guest', {
   
   onRender: function() {
     if (this.renderCount % Game.map_size.tile.width == 0) {
-      var dir = Math.random() > 0.5;
-      if (dir) {
-        this.xDiff = (Math.random() * 3);
-        if (this.xDiff > 2.8) {
-          this.xDiff = 1;
-        } else if (this.xDiff > 0.2) {
-          this.xDiff = 0;
-        } else {
-          this.xDiff = -1;
-        }
-        this.yDiff = 0;
-      } else {
-        this.yDiff = (Math.random() * 3);
-        if (this.yDiff > 2.8) {
-          this.yDiff = 1;
-        } else if (this.yDiff > 0.2) {
+      
+      var result = this.hit('PlayerCharacter');
+      if (!result) {
+        var dir = Math.random() > 0.5;
+        if (dir) {
+          this.xDiff = (Math.random() * 3);
+          if (this.xDiff > 2.8) {
+            this.xDiff = 1;
+          } else if (this.xDiff > 0.2) {
+            this.xDiff = 0;
+          } else {
+            this.xDiff = -1;
+          }
           this.yDiff = 0;
         } else {
-          this.yDiff = -1;
+          this.yDiff = (Math.random() * 3);
+          if (this.yDiff > 2.8) {
+            this.yDiff = 1;
+          } else if (this.yDiff > 0.2) {
+            this.yDiff = 0;
+          } else {
+            this.yDiff = -1;
+          }
+          this.xDiff = 0;
         }
-        this.xDiff = 0;
+        this.setAnimation();
       }
-      this.setAnimation();
     }
     
     this.renderCount++;
@@ -168,6 +172,7 @@ Crafty.c('Guest', {
   stopMovement: function() {
     this.xDiff = 0;
     this.yDiff = 0;
+    this.setAnimation();
   },
   
   avoidGuest: function() {
