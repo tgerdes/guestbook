@@ -104,13 +104,14 @@ Crafty.c('Guest', {
       .reel('GuestRight', 600, 0, 1, 3)
       .reel('GuestDown', 600, 0, 2, 3)
       .reel('GuestLeft', 600, 0, 3, 3);
+    var faceIndex = Game.guests.count++ % Game.guests.files.length;
+    this.saying = Game.guests.sayings[faceIndex];
     this.myText = Crafty.e('GuestText');
     this.myText.text(this.saying);
     this.attach(this.myText);
     this.myText.shift(0, -24, 0, 0);
     this.myFace = Crafty.e('GuestFace');
     
-    var faceIndex = Game.guests.count++ % Game.guests.files.length;
     this.myFace = Crafty.e('face' + faceIndex);
     this.attach(this.myFace);
     this.myFace.w = 48;
