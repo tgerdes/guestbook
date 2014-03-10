@@ -154,9 +154,9 @@ Crafty.c('Guest', {
     
     this.renderCount++;
     this.x = Math.max(Game.map_size.tile.width, this.x + this.xDiff);
-    this.x = Math.min((Game.map_size.windowWidth - 2) * Game.map_size.tile.width, this.x);
+    this.x = Math.min((Game.map_size.windowWidth - 3) * Game.map_size.tile.width, this.x);
     this.y = Math.max(Game.map_size.tile.height, this.y + this.yDiff);
-    this.y = Math.min((Game.map_size.windowHeight - 2) * Game.map_size.tile.height, this.y);
+    this.y = Math.min((Game.map_size.windowHeight - 4) * Game.map_size.tile.height, this.y);
     
 //     this.myText.attr({ x: this.x, y: this.y - Game.map_size.tile.height / 2 });
   },
