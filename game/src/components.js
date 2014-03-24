@@ -46,28 +46,6 @@ Crafty.c('Wall', {
   },
 });
 
-// Crafty.c('Corner', {
-//   init: function() {
-//     this.requires('Actor, Solid, spr_corner').attr({w: 64, h: 64});
-//   },
-// });
-
-// Crafty.c('CornerSmall', {
-//   init: function() {
-//     this.requires('Actor, Solid');
-//   },
-  
-//   setCorner: function(which) {
-//     if (which == 0) {
-//       this.addComponent('spr_corner_sm');
-//       this.attr({w: 32, h: 64})
-//     } else {
-//       this.addComponent('spr_corner_sm2');
-//       this.attr({w: 64, h: 32})
-//     }
-//   }
-// });
-
 // A Tree is just an Actor with a certain color
 Crafty.c('Window', {
   init: function() {
@@ -83,14 +61,6 @@ Crafty.c('WindowB', {
       .attr({w: 256, h: 64});
   },
 });
-
-// A Bush is just an Actor with a certain color
-// Crafty.c('Bush', {
-//   init: function() {
-//     this.requires('Actor, spr_bush')
-//       .attr({w: 32, h: 32});
-//   },
-// });
 
 //function GuestText () {
 Crafty.c('GuestText', {
@@ -191,6 +161,9 @@ Crafty.c('Guest', {
           this.xDiff = 0;
         }
         this.setAnimation();
+      }
+      if (Math.random() < 0.01) {
+        this.showText();
       }
     }
     
