@@ -41,10 +41,10 @@ Crafty.scene('Game', function() {
       }
     }
     if (Game.map.id < Game.map.count) {
-      Crafty.e('Door').at(Game.map_size.windowWidth - 1, Game.map.door - 1);
+      Crafty.e('Door').at(Game.map_size.windowWidth - 1, Game.map.door - 2).direction(true);
     }
     if (Game.map.id > 0) {
-      Crafty.e('Door').at(0, Game.map.door - 1);
+      Crafty.e('Door').at(0, Game.map.door - 2).direction(false);
     }
     if (Math.random() > 0.05) {
       Crafty.e('Window').at(10, 0);

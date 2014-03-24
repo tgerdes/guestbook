@@ -29,8 +29,16 @@ Crafty.c('Actor', {
 
 Crafty.c('Door', {
   init: function() {
-    this.requires('Actor, spr_arrow_right')
-      .attr({w: 32, h: 128});
+    this.requires('Actor').alpha = 0.12;
+  },
+  
+  direction: function(right) {
+    if (right) {
+      this.addComponent('spr_arrow_right');
+    } else {
+      this.addComponent('spr_arrow_left')
+    }
+    this.attr({w: 32, h: 192});
   }
 });
 
