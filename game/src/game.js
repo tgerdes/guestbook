@@ -5,8 +5,9 @@
 
 Game = {
   map_size: {
-    windowWidth: 24,
-    windowHeight: 18,
+    // 640x800
+    windowWidth: 25,
+    windowHeight: 21,
     width:  64,
     height: 64,
     tile: {
@@ -24,7 +25,30 @@ Game = {
     count: 2,
     door: 8,
     startX: 11,
-    startY: 8
+    startY: 8,
+    init: function() {
+      this.occupied = new Array(Game.map_size.windowWidth);
+      for (var x = 0; x < Game.map_size.windowWidth; x++) {
+        this.occupied[x] = new Array(Game.map_size.windowHeight);
+        for (var y = 0; y < Game.map_size.windowHeight; y++) {
+          this.occupied[x][y] = false;
+        }
+      }
+    },
+  
+    occupy: function(x, y, width, height) {
+      for (var i = 0; i < width; i++) {
+        for (var j = 0; j < height; j++) {
+          if (x + i < this.occupied.length && y + j < this.occupied[x + i].length ) {
+            this.occupied[x + i][y + j] = true; 
+          }
+        }
+      }
+    },
+    
+    isOccupied: function(x, y) {
+      return this.occupied[x][y];
+    }
   },
   
   guests: {

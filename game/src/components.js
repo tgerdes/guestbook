@@ -29,26 +29,68 @@ Crafty.c('Actor', {
 
 Crafty.c('Door', {
   init: function() {
-    this.requires('Actor')
-      .attr({w: 16, h: 32});
+    this.requires('Actor, spr_arrow_right')
+      .attr({w: 32, h: 128});
   }
-})
- 
+});
+
 // A Tree is just an Actor with a certain color
-Crafty.c('Tree', {
+Crafty.c('Wall', {
   init: function() {
-    this.requires('Actor, Solid, spr_tree')
-      .attr({w: 32, h: 32});
+    this.requires('Actor, Solid');
+  },
+  
+  setWall: function(which) {
+    this.addComponent('spr_wall_' + which);
+    this.attr({w: 64, h: 64});
   },
 });
- 
+
+// Crafty.c('Corner', {
+//   init: function() {
+//     this.requires('Actor, Solid, spr_corner').attr({w: 64, h: 64});
+//   },
+// });
+
+// Crafty.c('CornerSmall', {
+//   init: function() {
+//     this.requires('Actor, Solid');
+//   },
+  
+//   setCorner: function(which) {
+//     if (which == 0) {
+//       this.addComponent('spr_corner_sm');
+//       this.attr({w: 32, h: 64})
+//     } else {
+//       this.addComponent('spr_corner_sm2');
+//       this.attr({w: 64, h: 32})
+//     }
+//   }
+// });
+
+// A Tree is just an Actor with a certain color
+Crafty.c('Window', {
+  init: function() {
+    this.requires('Actor, Solid, spr_window_a')
+      .attr({w: 256, h: 64});
+  },
+});
+
+// A Tree is just an Actor with a certain color
+Crafty.c('WindowB', {
+  init: function() {
+    this.requires('Actor, Solid, spr_window_b')
+      .attr({w: 256, h: 64});
+  },
+});
+
 // A Bush is just an Actor with a certain color
-Crafty.c('Bush', {
-  init: function() {
-    this.requires('Actor, spr_bush')
-      .attr({w: 32, h: 32});
-  },
-});
+// Crafty.c('Bush', {
+//   init: function() {
+//     this.requires('Actor, spr_bush')
+//       .attr({w: 32, h: 32});
+//   },
+// });
 
 //function GuestText () {
 Crafty.c('GuestText', {
@@ -199,7 +241,7 @@ Crafty.c('Guest', {
     console.log('showing text ' + this.myText._text + " at " + this.x + ", " + this.y);
     this.myText.start();
   }
-})
+});
     
 // This is the player-controlled character
 Crafty.c('PlayerCharacter', {
@@ -237,10 +279,10 @@ Crafty.c('PlayerCharacter', {
   changeScene: function() {
     if (this.x > Game.getViewWidth() / 2) {
       Game.map.id++;
-      Game.map.startX = 1;
+      Game.map.startX = 2;
     } else {
       Game.map.id--;
-      Game.map.startX = Game.map_size.windowWidth - 2;
+      Game.map.startX = Game.map_size.windowWidth - 3;
     }
     Game.map.startY = this.at().y;
     console.log("Restarting with map id " + Game.map.id);
