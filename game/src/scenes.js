@@ -105,7 +105,7 @@ Crafty.scene('Loading', function(){
   Crafty.e('2D, DOM, Text')
     .text('Loading; please wait...')
     .attr({ x: 0, y: Game.getViewHeight()/2 - 24, w: Game.getViewWidth() })
-    .textFont({ 'size': '24px'})
+    .textFont({'size': '24px'})
     .css($text_css);
  
   // Load our sprite map image
@@ -120,7 +120,6 @@ Crafty.scene('Loading', function(){
         'assets/window-2.png',
         'assets/arrows-left.png',
         'assets/arrows-right.png',
-        'assets/dante_0_0.png',
         'assets/body_m1.png',
         'assets/body_m2.png',
         'assets/body_m3.png',
@@ -131,18 +130,7 @@ Crafty.scene('Loading', function(){
         Game.guests.files[1]
         ], function(){
     // Once the image is loaded...
-
-    // Define the individual sprites in the image
-    // Each one (spr_tree, etc.) becomes a component
-    // These components' names are prefixed with "spr_"
-    //  to remind us that they simply cause the entity
-    //  to be drawn with a certain sprite
-    Crafty.sprite(16, 'assets/16x16_forest_2.gif', {
-      spr_tree:    [0, 0],
-      spr_bush:    [1, 0],
-      spr_village: [0, 1],
-    });
-
+    
     Crafty.sprite(48, 96, 'assets/body_m1.png', {
       spr_guest0:  [0, 0],
     }, 0, 0);
@@ -216,14 +204,16 @@ Crafty.scene('Loading', function(){
     }, 0, 0);
     
     for (var i = 0; i < Game.guests.files.length; i++) {
+      var spriteName = 'face' + i;
       Crafty.face('FaceSprite' + i, Game.guests.files[i]);
-      Crafty.c('face' + i, {
+      Crafty.c(spriteName, {
         myId: i,
         init: function() {
           this.requires('2D, Canvas, FaceSprite' + this.myId);
           console.log('Initializing face' + this.myId);
         }
       });
+      Game.guests.sprites[i] = spriteName;
     }
     // Now that our sprites are ready to draw, start the game
     Crafty.scene('Game');

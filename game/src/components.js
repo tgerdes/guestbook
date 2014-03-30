@@ -128,8 +128,8 @@ Crafty.c('Guest', {
   myHair: null,
   
   init: function() {
-    var bodyIndex = Game.guests.count++ % 5;
-    this.requires('Actor, Collision, SpriteAnimation, spr_guest' + bodyIndex)
+    var guestIndex = Game.guests.count++ % Game.guests.files.length;
+    this.requires('Actor, Collision, SpriteAnimation, spr_guest' + Game.guests.bodies[guestIndex])
       .bind('RenderScene', this.onRender)
       .stopOnSolids()
       .attr({w: 48, h: 96})
@@ -137,16 +137,15 @@ Crafty.c('Guest', {
       .reel('GuestRight', 600, 0, 1, 3)
       .reel('GuestLeft', 600, 0, 2, 3)
       .reel('GuestUp', 600, 0, 3, 3);
-    var faceIndex = Game.guests.count++ % Game.guests.files.length;
-    this.saying = Game.guests.sayings[faceIndex];
+    this.saying = Game.guests.sayings[guestIndex];
     this.myText = Crafty.e('GuestText');
     this.myText.text(this.saying);
     this.attach(this.myText);
     this.myText.shift(0, -24, 0, 0);
     this.myFace = Crafty.e('GuestFace');
     
-    this.myFace = Crafty.e('face' + faceIndex);
-    this.myHair = Crafty.e('GuestHair');
+    this.myFace = Crafty.e(Game.guests.sprites[guestIndex]);
+    this.myHair = Crafty.e('GuestHair'/* + Game.guests.hairs[guestIndex]*/);
     this.attach(this.myFace);
     this.attach(this.myHair);
     this.myFace.w = 48;
