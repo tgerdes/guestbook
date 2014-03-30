@@ -122,6 +122,10 @@ Crafty.scene('Loading', function(){
         'assets/arrows-right.png',
         'assets/dante_0_0.png',
         'assets/body_m1.png',
+        'assets/body_m2.png',
+        'assets/body_m3.png',
+        'assets/body_m4.png',
+        'assets/body_m5.png',
         'assets/hair1.png',
         Game.guests.files[0],
         Game.guests.files[1]
@@ -140,7 +144,23 @@ Crafty.scene('Loading', function(){
     });
 
     Crafty.sprite(48, 96, 'assets/body_m1.png', {
-      spr_guest:  [0, 0],
+      spr_guest0:  [0, 0],
+    }, 0, 0);
+
+    Crafty.sprite(48, 96, 'assets/body_m2.png', {
+      spr_guest1:  [0, 0],
+    }, 0, 0);
+
+    Crafty.sprite(48, 96, 'assets/body_m3.png', {
+      spr_guest2:  [0, 0],
+    }, 0, 0);
+
+    Crafty.sprite(48, 96, 'assets/body_m4.png', {
+      spr_guest3:  [0, 0],
+    }, 0, 0);
+
+    Crafty.sprite(48, 96, 'assets/body_m5.png', {
+      spr_guest4:  [0, 0],
     }, 0, 0);
 
     Crafty.sprite(48, 96, 'assets/andrew.png', {

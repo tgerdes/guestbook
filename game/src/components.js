@@ -128,7 +128,8 @@ Crafty.c('Guest', {
   myHair: null,
   
   init: function() {
-    this.requires('Actor, Collision, spr_guest, SpriteAnimation')
+    var bodyIndex = Game.guests.count++ % 5;
+    this.requires('Actor, Collision, SpriteAnimation, spr_guest' + bodyIndex)
       .bind('RenderScene', this.onRender)
       .stopOnSolids()
       .attr({w: 48, h: 96})
