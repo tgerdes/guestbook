@@ -247,6 +247,7 @@ Crafty.c('Guest', {
       this.animate('GuestUp', -1);
       isUp = true;
     } else {
+      this.animate('GuestDown', 0);
       this.pauseAnimation();
     }
     if (isUp) {
