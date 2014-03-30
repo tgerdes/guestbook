@@ -106,24 +106,36 @@ Crafty.c('GuestFace', {
   }
 });
 
+Crafty.c('GuestHair', {
+  init: function() {
+    this.requires('2D, Canvas, spr_hair1');
+  },
+  
+  setHair: function(which) {
+    // make hair a combined image, pick the correct spot in the image
+  }
+});
+
 Crafty.c('Guest', {
   xDiff: 0,
   yDiff: 0,
   renderCount: 0,
+  bounceCount: 0,
   name: "Steve",
   saying: "Steeeeeve!",
   myText: null,
   myFace: null,
+  myHair: null,
   
   init: function() {
     this.requires('Actor, Collision, spr_guest, SpriteAnimation')
       .bind('RenderScene', this.onRender)
       .stopOnSolids()
       .attr({w: 48, h: 96})
-      .reel('GuestUp', 600, 0, 0, 3)
+      .reel('GuestDown', 600, 0, 0, 3)
       .reel('GuestRight', 600, 0, 1, 3)
-      .reel('GuestDown', 600, 0, 2, 3)
-      .reel('GuestLeft', 600, 0, 3, 3);
+      .reel('GuestLeft', 600, 0, 2, 3)
+      .reel('GuestUp', 600, 0, 3, 3);
     var faceIndex = Game.guests.count++ % Game.guests.files.length;
     this.saying = Game.guests.sayings[faceIndex];
     this.myText = Crafty.e('GuestText');
@@ -133,7 +145,9 @@ Crafty.c('Guest', {
     this.myFace = Crafty.e('GuestFace');
     
     this.myFace = Crafty.e('face' + faceIndex);
+    this.myHair = Crafty.e('GuestHair');
     this.attach(this.myFace);
+    this.attach(this.myHair);
     this.myFace.w = 48;
     this.myFace.h = 66;
     this.myFace.ready = true;
@@ -143,6 +157,7 @@ Crafty.c('Guest', {
   
   onRender: function() {
     if (this.renderCount % Game.map_size.tile.width == 0) {
+      this.bounceCount = 0;
       
       var result = this.hit('PlayerCharacter');
       if (!result) {
@@ -176,12 +191,20 @@ Crafty.c('Guest', {
     }
     
     this.renderCount++;
-    this.x = Math.max(Game.map_size.tile.width, this.x + this.xDiff);
-    this.x = Math.min((Game.map_size.windowWidth - 3) * Game.map_size.tile.width, this.x);
-    this.y = Math.max(Game.map_size.tile.height, this.y + this.yDiff);
-    this.y = Math.min((Game.map_size.windowHeight - 4) * Game.map_size.tile.height, this.y);
-    
+    this.doMove(false);
 //     this.myText.attr({ x: this.x, y: this.y - Game.map_size.tile.height / 2 });
+  },
+  
+  doMove: function(revert) {
+    var diff;
+    if (revert) diff = -this.xDiff
+    else diff = this.xDiff;
+    this.x = Math.max(Game.map_size.tile.width, this.x + diff);
+    this.x = Math.min((Game.map_size.windowWidth - 3) * Game.map_size.tile.width, this.x);
+    if (revert) diff = -this.yDiff
+    else diff = this.yDiff;
+    this.y = Math.max(Game.map_size.tile.height, this.y + diff);
+    this.y = Math.min((Game.map_size.windowHeight - 4) * Game.map_size.tile.height, this.y);
   },
 
   stopOnSolids: function() {
@@ -193,18 +216,27 @@ Crafty.c('Guest', {
  
   // Stops the movement
   stopMovement: function() {
+    this.doMove(true);
     this.xDiff = 0;
     this.yDiff = 0;
     this.setAnimation();
   },
   
   avoidGuest: function() {
-    this.xDiff = -this.xDiff;
-    this.yDiff = -this.yDiff;
+    this.doMove(true);
+    if (this.bounceCount > 1) {
+      this.xDiff = 0;
+      this.yDiff = 0;
+    } else {
+      this.xDiff = -this.xDiff;
+      this.yDiff = -this.yDiff;
+      this.bounceCount++;
+    }
     this.setAnimation();
   },
   
   setAnimation: function() {
+    var isUp = false;
     if (this.xDiff > 0) {
       this.animate('GuestRight', -1);
     } else if (this.xDiff < 0) {
@@ -213,8 +245,16 @@ Crafty.c('Guest', {
       this.animate('GuestDown', -1);
     } else if (this.yDiff < 0) {
       this.animate('GuestUp', -1);
+      isUp = true;
     } else {
       this.pauseAnimation();
+    }
+    if (isUp) {
+      this.myFace.visible = false;
+      this.myHair.visible = true;
+    } else {
+      this.myFace.visible = true;
+      this.myHair.visible = false;
     }
   },
   
