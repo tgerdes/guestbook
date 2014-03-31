@@ -65,7 +65,8 @@ Crafty.scene('Game', function() {
       if (Math.random() < 0.06) {
         var occupied = Game.map.isOccupied(x, y) || Game.map.isOccupied(x, y+1) || Game.map.isOccupied(x, y+2);
         if (Crafty('Guest').length < max_npcs && !occupied) {
-          Crafty.e('Guest').at(x, y);
+          var guestIndex = Crafty('Guest').length % Game.guests.files.length;
+          Crafty.e('Guest').at(x, y).configureGuest(guestIndex);
           Game.map.occupy(x, y, 2, 3);
         }
       }

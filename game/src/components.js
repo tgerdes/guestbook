@@ -128,9 +128,12 @@ Crafty.c('Guest', {
   myHair: null,
   
   init: function() {
-    var guestIndex = Game.guests.count++ % Game.guests.files.length;
-    this.requires('Actor, Collision, SpriteAnimation, spr_guest' + Game.guests.bodies[guestIndex])
-      .bind('RenderScene', this.onRender)
+    this.requires('Actor, Collision, SpriteAnimation');
+  },
+  
+  configureGuest: function(guestIndex) {
+    this.addComponent('spr_guest' + Game.guests.bodies[guestIndex]);
+    this.bind('RenderScene', this.onRender)
       .stopOnSolids()
       .attr({w: 48, h: 96})
       .reel('GuestDown', 600, 0, 0, 3)
@@ -141,7 +144,6 @@ Crafty.c('Guest', {
     this.myText = Crafty.e('GuestText');
     this.myText.text(this.saying);
     this.attach(this.myText);
-    this.myText.shift(0, -24, 0, 0);
     this.myFace = Crafty.e('GuestFace');
     
     this.myFace = Crafty.e(Game.guests.sprites[guestIndex]);
@@ -150,6 +152,10 @@ Crafty.c('Guest', {
     this.attach(this.myHair);
     this.myFace.w = 48;
     this.myFace.h = 66;
+    
+    this.myText.shift(this.x, this.y - 24, 0, 0);
+    this.myFace.shift(this.x, this.y, 0, 0);
+    this.myHair.shift(this.x, this.y, 0, 0);
     this.myFace.ready = true;
     this.myFace.trigger("Invalidate");
     console.log('myFace is ' + this.myFace + ' with image ' + this.myFace.img);
