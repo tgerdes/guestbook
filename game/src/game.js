@@ -18,6 +18,7 @@ Game = {
   
   constants: {
     textDuration: 250,
+    guestsPerRoom: 10,
   },
   
   map: {
@@ -27,6 +28,7 @@ Game = {
     startX: 11,
     startY: 8,
     init: function() {
+      this.count = Math.ceil(Game.guests.total / Game.constants.guestsPerRoom);
       this.occupied = new Array(Game.map_size.windowWidth);
       for (var x = 0; x < Game.map_size.windowWidth; x++) {
         this.occupied[x] = new Array(Game.map_size.windowHeight);
@@ -46,13 +48,25 @@ Game = {
       }
     },
     
-    isOccupied: function(x, y) {
-      return this.occupied[x][y];
+    isOccupied: function(x, y, width, height) {
+      for (var i = 0; i < width; i++) {
+        for (var j = 0; j < height; j++) {
+          if (x + i < this.occupied.length && y + j < this.occupied[x + i].length ) {
+            if (this.occupied[x + i][y + j]) {
+              return true;
+            } 
+          } else {
+            return true;
+          }
+        }
+      }
+      return false;
     }
   },
   
   guests: {
-    count: 0,
+    total: 25, // total number of guests that were loaded
+    count: 0, // number of guests currently in the scene
     files: ['assets/face-e.png', 'assets/face-r.png', 'assets/face-j.png', 'assets/face-t.png', 'assets/face-s.png'],
     sayings: ['Wat?', 'Noooo!', 'Yesss!', 'Guys?', 'Umm...'],
     bodies: [0, 1, 2, 3, 4],

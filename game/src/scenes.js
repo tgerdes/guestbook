@@ -7,7 +7,7 @@ Crafty.scene('Game', function() {
  
   // Player character, placed at 5, 5 on our grid
   this.player = Crafty.e('PlayerCharacter').at(Game.map.startX, Game.map.startY);
-  Game.map.occupy(this.player.at().x, this.player.at().y, 1, 1);
+  Game.map.occupy(this.player.at().x, this.player.at().y, 2, 3);
   var decorations = 0;
  
   // Place a tree at every edge square on our grid of 16x16 tiles
@@ -15,7 +15,7 @@ Crafty.scene('Game', function() {
     for (var y = 0; y < Game.map_size.windowHeight; y += 2) {
       var at_edge = x == 0 || x == Game.map_size.windowWidth - 1 || y == 0 || y == Game.map_size.windowHeight - 1;
       var at_door = (y >= Game.map.door - 2 && y <= Game.map.door + 2 ) && ((x == 0 && Game.map.id > 0)
-          || (x == Game.map_size.windowWidth - 1 && Game.map.id < Game.map.count));
+          || (x == Game.map_size.windowWidth - 1 && Game.map.id < Game.map.count - 1));
       var can_decorate = (x == 0 || y == 0) && !(y == 0 && x == 0)
           && x != Game.map_size.windowWidth - 1 && y != Game.map_size.windowHeight - 1;
  
@@ -58,18 +58,21 @@ Crafty.scene('Game', function() {
     
   }
  
-  // Generate up to 10 NPCs on the map in random locations
-  var max_npcs = 10;
-  for (var x = 2; x < Game.map_size.windowWidth - 3; x++) {
-    for (var y = 2; y < Game.map_size.windowHeight - 3; y++) {
-      if (Math.random() < 0.06) {
-        var occupied = Game.map.isOccupied(x, y) || Game.map.isOccupied(x, y+1) || Game.map.isOccupied(x, y+2);
-        if (Crafty('Guest').length < max_npcs && !occupied) {
-          var guestIndex = Crafty('Guest').length % Game.guests.files.length;
-          Crafty.e('Guest').at(x, y).configureGuest(guestIndex);
-          Game.map.occupy(x, y, 2, 3);
-        }
+  // Generate NPCs on the map in random locations
+  var guestCount = 0;
+  while (guestCount < Game.constants.guestsPerRoom) {
+    var x = Math.floor(Math.random() * (Game.map_size.windowWidth - 5)) + 2;
+    var y = Math.floor(Math.random() * (Game.map_size.windowHeight - 5)) + 2;
+    console.log('Checking occupancy of ' + x + ', ' + y);
+    if (!Game.map.isOccupied(x, y, 2, 3)) {
+      var guestIndex = Game.map.id * Game.constants.guestsPerRoom + guestCount;
+      if (guestIndex > Game.guests.total) {
+        break;
       }
+      guestIndex = guestIndex % Game.guests.files.length; // TODO remove when total is this length
+      Crafty.e('Guest').at(x, y).configureGuest(guestIndex);
+      Game.map.occupy(x, y, 2, 3);
+      guestCount++;
     }
   }
 }, function() {
@@ -100,7 +103,7 @@ Crafty.scene('Victory', function() {
 // Loading scene
 // -------------
 // Handles the loading of binary assets such as images and audio files
-Crafty.scene('Loading', function(){
+Crafty.scene('Loading', function() {
   // Draw some text for the player to see in case the file
   //  takes a noticeable amount of time to load
   Crafty.e('2D, DOM, Text')
@@ -111,113 +114,113 @@ Crafty.scene('Loading', function(){
  
   // Load our sprite map image
   Crafty.load([
-        'assets/wall-1.png',
-        'assets/wall-2.png',
-        'assets/wall-3.png',
-        'assets/corner.png',
-        'assets/corner-small.png',
-        'assets/corner-small2.png',
-        'assets/window-1.png',
-        'assets/window-2.png',
-        'assets/arrows-left.png',
-        'assets/arrows-right.png',
-        'assets/body_m1.png',
-        'assets/body_m2.png',
-        'assets/body_m3.png',
-        'assets/body_m4.png',
-        'assets/body_m5.png',
-        'assets/hair1.png',
-        Game.guests.files[0],
-        Game.guests.files[1]
-        ], function(){
-    // Once the image is loaded...
-    
-    Crafty.sprite(48, 96, 'assets/body_m1.png', {
-      spr_guest0:  [0, 0],
-    }, 0, 0);
-
-    Crafty.sprite(48, 96, 'assets/body_m2.png', {
-      spr_guest1:  [0, 0],
-    }, 0, 0);
-
-    Crafty.sprite(48, 96, 'assets/body_m3.png', {
-      spr_guest2:  [0, 0],
-    }, 0, 0);
-
-    Crafty.sprite(48, 96, 'assets/body_m4.png', {
-      spr_guest3:  [0, 0],
-    }, 0, 0);
-
-    Crafty.sprite(48, 96, 'assets/body_m5.png', {
-      spr_guest4:  [0, 0],
-    }, 0, 0);
-
-    Crafty.sprite(48, 96, 'assets/andrew.png', {
-      spr_player: [0,0],
-    }, 0, 0);
-
-    Crafty.sprite(64, 64, 'assets/floor-1.png', {
-      spr_floor: [0,0],
-    }, 0, 0);
-
-    Crafty.sprite(64, 64, 'assets/wall-1.png', {
-      spr_wall_0: [0,0],
-    }, 0, 0);
-
-    Crafty.sprite(64, 64, 'assets/wall-2.png', {
-      spr_wall_1: [0,0],
-    }, 0, 0);
-    
-    Crafty.sprite(64, 64, 'assets/wall-3.png', {
-      spr_wall_2: [0,0],
-    }, 0, 0);
-
-    Crafty.sprite(64, 64, 'assets/corner.png', {
-      spr_wall_3: [0,0],
-    }, 0, 0);
-
-    Crafty.sprite(64, 64, 'assets/corner-small.png', {
-      spr_wall_4: [0,0],
-    }, 0, 0);
-
-    Crafty.sprite(64, 64, 'assets/corner-small2.png', {
-      spr_wall_5: [0,0],
-    }, 0, 0);
-    
-    Crafty.sprite(256, 64, 'assets/window-1.png', {
-      spr_window_b: [0,0],
-    }, 0, 0);
-
-    Crafty.sprite(256, 64, 'assets/window-2.png', {
-      spr_window_a: [0,0],
-    }, 0, 0);
-
-    Crafty.sprite(64, 256, 'assets/arrows-left.png', {
-      spr_arrow_left: [0,0],
-    }, 0, 0);
-    
-    Crafty.sprite(48, 66, 'assets/hair1.png', {
-      spr_hair1: [0,0],
-    }, 0, 0);
-
-    Crafty.sprite(64, 256, 'assets/arrows-right.png', {
-      spr_arrow_right: [0,0],
-    }, 0, 0);
-    
-    for (var i = 0; i < Game.guests.files.length; i++) {
-      var spriteName = 'face' + i;
-      Crafty.face('FaceSprite' + i, Game.guests.files[i]);
-      Crafty.c(spriteName, {
-        myId: i,
-        init: function() {
-          this.requires('2D, Canvas, FaceSprite' + this.myId);
-          console.log('Initializing face' + this.myId);
+      'assets/wall-1.png',
+      'assets/wall-2.png',
+      'assets/wall-3.png',
+      'assets/corner.png',
+      'assets/corner-small.png',
+      'assets/corner-small2.png',
+      'assets/window-1.png',
+      'assets/window-2.png',
+      'assets/arrows-left.png',
+      'assets/arrows-right.png',
+      'assets/body_m1.png',
+      'assets/body_m2.png',
+      'assets/body_m3.png',
+      'assets/body_m4.png',
+      'assets/body_m5.png',
+      'assets/hair1.png',
+      Game.guests.files[0],
+      Game.guests.files[1]
+      ],
+      function() {
+        // Once the image is loaded...
+        
+        Crafty.sprite(48, 96, 'assets/body_m1.png', {
+          spr_guest0:  [0, 0],
+        }, 0, 0);
+      
+        Crafty.sprite(48, 96, 'assets/body_m2.png', {
+          spr_guest1:  [0, 0],
+        }, 0, 0);
+      
+        Crafty.sprite(48, 96, 'assets/body_m3.png', {
+          spr_guest2:  [0, 0],
+        }, 0, 0);
+      
+        Crafty.sprite(48, 96, 'assets/body_m4.png', {
+          spr_guest3:  [0, 0],
+        }, 0, 0);
+      
+        Crafty.sprite(48, 96, 'assets/body_m5.png', {
+          spr_guest4:  [0, 0],
+        }, 0, 0);
+      
+        Crafty.sprite(48, 96, 'assets/andrew.png', {
+          spr_player: [0,0],
+        }, 0, 0);
+      
+        Crafty.sprite(64, 64, 'assets/floor-1.png', {
+          spr_floor: [0,0],
+        }, 0, 0);
+      
+        Crafty.sprite(64, 64, 'assets/wall-1.png', {
+          spr_wall_0: [0,0],
+        }, 0, 0);
+      
+        Crafty.sprite(64, 64, 'assets/wall-2.png', {
+          spr_wall_1: [0,0],
+        }, 0, 0);
+        
+        Crafty.sprite(64, 64, 'assets/wall-3.png', {
+          spr_wall_2: [0,0],
+        }, 0, 0);
+      
+        Crafty.sprite(64, 64, 'assets/corner.png', {
+          spr_wall_3: [0,0],
+        }, 0, 0);
+      
+        Crafty.sprite(64, 64, 'assets/corner-small.png', {
+          spr_wall_4: [0,0],
+        }, 0, 0);
+      
+        Crafty.sprite(64, 64, 'assets/corner-small2.png', {
+          spr_wall_5: [0,0],
+        }, 0, 0);
+        
+        Crafty.sprite(256, 64, 'assets/window-1.png', {
+          spr_window_b: [0,0],
+        }, 0, 0);
+      
+        Crafty.sprite(256, 64, 'assets/window-2.png', {
+          spr_window_a: [0,0],
+        }, 0, 0);
+      
+        Crafty.sprite(64, 256, 'assets/arrows-left.png', {
+          spr_arrow_left: [0,0],
+        }, 0, 0);
+        
+        Crafty.sprite(48, 66, 'assets/hair1.png', {
+          spr_hair1: [0,0],
+        }, 0, 0);
+      
+        Crafty.sprite(64, 256, 'assets/arrows-right.png', {
+          spr_arrow_right: [0,0],
+        }, 0, 0);
+        
+        for (var i = 0; i < Game.guests.files.length; i++) {
+          var spriteName = 'face' + i;
+          Crafty.face('FaceSprite' + i, Game.guests.files[i]);
+          Crafty.c(spriteName, {
+            myId: i,
+            init: function() {
+              this.requires('2D, Canvas, FaceSprite' + this.myId);
+              console.log('Initializing face' + this.myId);
+            }
+          });
+          Game.guests.sprites[i] = spriteName;
         }
+        // Now that our sprites are ready to draw, start the game
+        Crafty.scene('Game');
       });
-      Game.guests.sprites[i] = spriteName;
-    }
-    // Now that our sprites are ready to draw, start the game
-    Crafty.scene('Game');
-  });
- 
 });
