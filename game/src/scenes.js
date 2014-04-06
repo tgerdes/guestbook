@@ -6,7 +6,7 @@ Crafty.scene('Game', function() {
   Crafty.background('#FFFFFF url(assets/floor-tile.png)');
  
   // Player character, placed at 5, 5 on our grid
-  this.player = Crafty.e('PlayerCharacter').at(Game.map.startX, Game.map.startY);
+  this.player = Crafty.e(Game.map.pc).at(Game.map.startX, Game.map.startY);
   Game.map.occupy(this.player.at().x, this.player.at().y, 2, 3);
   var decorations = 0;
  
@@ -99,6 +99,29 @@ Crafty.scene('Victory', function() {
   //  multiple restarts of the game
   this.unbind('KeyDown', this.restart_game);
 });
+
+Crafty.scene('PlayerSelect', function() {
+  Crafty.e('2D, DOM, Text')
+    .text('Select your player')
+    .attr({ x:0, y:128, w:Game.getViewWidth()})
+    .textFont({'size': '24px'})
+    .css($text_css);
+    
+    Crafty.e('Player1')
+      .at(8, 8)
+      .bind('Click', function() {
+        console.log("Clicked 1st char!!");
+        Game.map.pc = 'Player1';
+        Crafty.scene('Game');
+      });
+    Crafty.e('Player2')
+      .at(16, 8)
+      .bind('Click', function() {
+        console.log("Clicked 2nd char!!");
+        Game.map.pc = 'Player2';
+        Crafty.scene('Game');
+      });
+});
  
 // Loading scene
 // -------------
@@ -130,8 +153,8 @@ Crafty.scene('Loading', function() {
       'assets/body_m4.png',
       'assets/body_m5.png',
       'assets/hair1.png',
-      Game.guests.files[0],
-      Game.guests.files[1]
+      'assets/andrew.png',
+      'assets/player2.png'
       ],
       function() {
         // Once the image is loaded...
@@ -158,6 +181,10 @@ Crafty.scene('Loading', function() {
       
         Crafty.sprite(48, 96, 'assets/andrew.png', {
           spr_player: [0,0],
+        }, 0, 0);
+      
+        Crafty.sprite(48, 96, 'assets/player2.png', {
+          spr_player2: [0,0],
         }, 0, 0);
       
         Crafty.sprite(64, 64, 'assets/floor-1.png', {
@@ -221,6 +248,6 @@ Crafty.scene('Loading', function() {
           Game.guests.sprites[i] = spriteName;
         }
         // Now that our sprites are ready to draw, start the game
-        Crafty.scene('Game');
+        Crafty.scene('PlayerSelect');
       });
 });

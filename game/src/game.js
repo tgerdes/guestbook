@@ -22,6 +22,7 @@ Game = {
   },
   
   map: {
+    pc: null,
     id: 0,
     count: 2,
     door: 8,

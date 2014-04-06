@@ -270,11 +270,25 @@ Crafty.c('Guest', {
     this.myText.start();
   }
 });
+
+Crafty.c('Player1', {
+  init: function() {
+    this.requires('spr_player, PlayerCharacter')
+      .attr({w: 48, h: 96});
+  },
+});
+
+Crafty.c('Player2', {
+  init: function() {
+    this.requires('spr_player2, PlayerCharacter')
+      .attr({w: 48, h: 96});
+  },
+});
     
 // This is the player-controlled character
 Crafty.c('PlayerCharacter', {
   init: function() {
-    this.requires('Actor, Fourway, spr_player, Collision, Keyboard, SpriteAnimation')
+    this.requires('Actor, Fourway, Collision, Keyboard, SpriteAnimation, Mouse')
       .fourway(4)
       .stopOnSolids()
       .reel('PlayerUp', 600, 0, 0, 3)
