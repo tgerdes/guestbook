@@ -107,7 +107,7 @@ Crafty.scene('Victory', function() {
     .css($text_css);
   Crafty.e('2D, DOM, Text')
     .text('From your SoMA friends!')
-    .attr({ x: 0, y: Game.getViewHeight() - 32, w: Game.getViewWidth() })
+    .attr({ x: 0, y: 416, w: Game.getViewWidth() })
     .textFont({'size': '24px'})
     .css($text_css);
   Crafty.e('2D, DOM, spr_red_button, Mouse')
