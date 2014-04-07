@@ -72,16 +72,14 @@ Crafty.scene('Game', function() {
     console.log('Checking occupancy of ' + x + ', ' + y);
     if (!Game.map.isOccupied(x, y, 2, 3)) {
       var guestIndex = Game.map.id * Game.constants.guestsPerRoom + guestCount;
-      if (guestIndex > Game.guests.total) {
+      if (guestIndex >= Game.guests.total) {
         break;
       }
       guestIndex = guestIndex % Game.guests.files.length; // TODO remove when total is this length
       var guest = Crafty.e('Guest').at(x, y);
       guest.configureGuest(guestIndex);
-//       guest.animateMove(64, true, {
-//         onFinish: function() {
-//           console.log('Finished animating');
-//         }
+//       guest.animateMove(-64, false, function() {
+//         console.log('Finished animating');
 //       });
       Game.map.occupy(x, y, 2, 3);
       guestCount++;
@@ -123,9 +121,9 @@ Crafty.scene('Victory', function() {
     var guest = Crafty.e('Guest').at(Game.map_size.windowWidth, Game.map_size.windowHeight - 4);
     guest.configureGuest(npcCount++);
     guest.setShouldWalk(false);
-    guest.animateMove(-Game.getViewWidth() / 2, true, function() {
+    guest.animateMove(-Game.getViewWidth() / 2 - 33, true, function() {
       guest.showText(Game.constants.finaleTextDuration, function() {
-        guest.animateMove(-Game.getViewWidth() / 2 - 64, true, function() {
+        guest.animateMove(-Game.getViewWidth() / 2 - 32, true, function() {
           console.log("destroying guest");
           guest.destroy();
         });
@@ -200,10 +198,19 @@ Crafty.scene('Loading', function() {
       'assets/hair1.png',
       'assets/andrew.png',
       'assets/player2.png',
-      'assets/redButton.png'
+      'assets/redButton.png',
+      'assets/hair_short.png',
+      'assets/hair_long.png'
       ],
       function() {
         // Once the image is loaded...
+        Crafty.sprite(48, 66, 'assets/hair_short.png', {
+          spr_hair_short: [0, 0],
+        }, 0, 0);
+        
+        Crafty.sprite(48, 66, 'assets/hair_long.png', {
+          spr_hair_long: [0, 0],
+        }, 0, 0);
         
         Crafty.sprite(48, 96, 'assets/body_m1.png', {
           spr_guest0:  [0, 0],

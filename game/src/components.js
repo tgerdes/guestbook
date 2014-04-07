@@ -117,10 +117,20 @@ Crafty.c('GuestFace', {
 
 Crafty.c('GuestHair', {
   init: function() {
-    this.requires('2D, Canvas, spr_hair1');
+    this.requires('2D, Canvas');
   },
   
   setHair: function(which) {
+    var hair;
+    if (which < 7) {
+      hair = 'spr_hair_short';
+    } else {
+      hair = 'spr_hair_long';
+      which -= 8;
+    }
+    this.addComponent(hair);
+    this.attr({w: 48, h:66});
+    this.sprite(0, which);
     // make hair a combined image, pick the correct spot in the image
   }
 });
@@ -164,6 +174,7 @@ Crafty.c('Guest', {
     
     this.myFace = Crafty.e(Game.guests.sprites[guestIndex]);
     this.myHair = Crafty.e('GuestHair'/* + Game.guests.hairs[guestIndex]*/);
+    this.myHair.setHair(Game.guests.hairs[guestIndex]);
     this.attach(this.myFace);
     this.attach(this.myHair);
     this.myFace.w = 48;
@@ -186,9 +197,9 @@ Crafty.c('Guest', {
     if (this.animatingMove) {
       var distX = Math.abs(this.x - this.xStart);
       var distY = Math.abs(this.y - this.yStart);
-      // console.log("Moved a dist of " + distX + "," + distY + " so far, need to reach " + this.xAnimDist + ", " + this.yAnimDist);
-      this.renderCount++;
-      if (this.renderCount > 500 || (distX >= this.xAnimDist && distY >= this.yAnimDist)) {
+      if (distX >= this.xAnimDist && distY >= this.yAnimDist) {
+        console.log("stopped animation with a dist of " + distX + ", " + distY
+            + " and rate of " + this.xDiff + ", " + this.yDiff);
         this.animatingMove = false;
         this.xDiff = 0;
         this.yDiff = 0;
@@ -199,6 +210,7 @@ Crafty.c('Guest', {
         return;
       }
       this.doMove(false);
+      return;
     } else if (!this.shouldWalk) {
       return;
     }
@@ -256,13 +268,13 @@ Crafty.c('Guest', {
     this.xAnimDist = Math.abs(xDist);
     this.yAnimDist = Math.abs(yDist);
     if (xDist < 0) {
-      this.xDiff = -1.5;
+      this.xDiff = -5;
     } else if (xDist > 0) {
-      this.xDiff = 1.5;
+      this.xDiff = 1.75;
     } else if (yDist < 0) {
-      this.yDiff = -1;
+      this.yDiff = -1.75;
     } else if (yDist > 0) {
-      this.yDiff = 0;
+      this.yDiff = 1.75;
     } else {
       return;
     }
@@ -271,7 +283,6 @@ Crafty.c('Guest', {
     this.animCb = cb;
     this.xStart = this.x;
     this.yStart = this.y;
-    this.renderCount = 0;
     console.log('Animating move from ' + this.xStart + ", " + this.yStart
       + " a distance of " + this.xAnimDist + ", " + this.yAnimDist);
   },
@@ -297,7 +308,8 @@ Crafty.c('Guest', {
   stopOnSolids: function() {
     this.onHit('Solid', this.avoidGuest);
     this.onHit('Guest', this.avoidGuest);
-    this.onHit('PlayerCharacter', this.stopMovement);
+    this.onHit(Game.map.p2, this.avoidGuest);
+    this.onHit(Game.map.pc, this.stopMovement);
     return this;
   },
  
