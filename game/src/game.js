@@ -17,17 +17,21 @@ Game = {
   },
   
   constants: {
+    finaleTextDuration: 150,
     textDuration: 250,
     guestsPerRoom: 10,
+    initX: 12,
+    initY: 9
   },
   
   map: {
     pc: null,
+    p2: null,
     id: 0,
     count: 2,
     door: 8,
-    startX: 11,
-    startY: 8,
+    startX: 12,
+    startY: 9,
     init: function() {
       this.count = Math.ceil(Game.guests.total / Game.constants.guestsPerRoom);
       this.occupied = new Array(Game.map_size.windowWidth);
@@ -66,7 +70,7 @@ Game = {
   },
   
   guests: {
-    total: 25, // total number of guests that were loaded
+    total: 5, // total number of guests that were loaded
     count: 0, // number of guests currently in the scene
     files: ['assets/face-e.png', 'assets/face-r.png', 'assets/face-j.png', 'assets/face-t.png', 'assets/face-s.png'],
     sayings: ['Wat?', 'Noooo!', 'Yesss!', 'Guys?', 'Umm...'],
@@ -159,4 +163,4 @@ Crafty.extend({
     }
 });
 
-$text_css = {'family': 'Arial', 'color': 'white', 'text-align': 'center' }
+$text_css = {'family': 'Arial', 'color': 'black', 'text-align': 'center' }

@@ -7,8 +7,14 @@ Crafty.scene('Game', function() {
  
   // Player character, placed at 5, 5 on our grid
   this.player = Crafty.e(Game.map.pc).at(Game.map.startX, Game.map.startY);
+  this.player.configure(true);
   Game.map.occupy(this.player.at().x, this.player.at().y, 2, 3);
   var decorations = 0;
+  if (Game.map.id == Game.map.count - 1) {
+    this.player2 = Crafty.e(Game.map.p2).at(20, 9);
+    this.player2.configure(false);
+    Game.map.occupy(20, 9, 2, 3);
+  }
  
   // Place a tree at every edge square on our grid of 16x16 tiles
   for (var x = 0; x <Game.map_size.windowWidth; x += 2) {
@@ -70,7 +76,13 @@ Crafty.scene('Game', function() {
         break;
       }
       guestIndex = guestIndex % Game.guests.files.length; // TODO remove when total is this length
-      Crafty.e('Guest').at(x, y).configureGuest(guestIndex);
+      var guest = Crafty.e('Guest').at(x, y);
+      guest.configureGuest(guestIndex);
+//       guest.animateMove(64, true, {
+//         onFinish: function() {
+//           console.log('Finished animating');
+//         }
+//       });
       Game.map.occupy(x, y, 2, 3);
       guestCount++;
     }
@@ -84,43 +96,75 @@ Crafty.scene('Game', function() {
 // Tells the player when they've won and lets them start a new game
 Crafty.scene('Victory', function() {
   // Display some text in celebration of the victory
+  Crafty.background('#BBBBFF');
   Crafty.e('2D, DOM, Text')
-    .attr({ x: 0, y: 0 })
-    .text('Victory!');
- 
-  // Watch for the player to press a key, then restart the game
-  //  when a key is pressed
-  this.restart_game = this.bind('KeyDown', function() {
-    Crafty.scene('Game');
-  });
-}, function() {
-  // Remove our event binding from above so that we don't
-  //  end up having multiple redundant event watchers after
-  //  multiple restarts of the game
-  this.unbind('KeyDown', this.restart_game);
+    .text('Congratulations')
+    .attr({ x: 0, y: 8, w: Game.getViewWidth() })
+    .textFont({'size': '48px'})
+    .css($text_css);
+  Crafty.e('2D, DOM, Text')
+    .text('Andrew & Laura!')
+    .attr({ x: 0, y: 72, w: Game.getViewWidth() })
+    .textFont({'size': '24px'})
+    .css($text_css);
+  Crafty.e('2D, DOM, Text')
+    .text('From your SoMA friends!')
+    .attr({ x: 0, y: Game.getViewHeight() - 32, w: Game.getViewWidth() })
+    .textFont({'size': '24px'})
+    .css($text_css);
+  Crafty.e('2D, DOM, spr_red_button, Mouse')
+    .attr({ x: Game.getViewWidth() / 2 - 128, y: 128 })
+    .bind('Click', function() {
+      Crafty.scene('PlayerSelect');
+    });
+    
+  var npcCount = 0;
+  var animateGuest = function() {
+    var guest = Crafty.e('Guest').at(Game.map_size.windowWidth, Game.map_size.windowHeight - 4);
+    guest.configureGuest(npcCount++);
+    guest.setShouldWalk(false);
+    guest.animateMove(-Game.getViewWidth() / 2, true, function() {
+      guest.showText(Game.constants.finaleTextDuration, function() {
+        guest.animateMove(-Game.getViewWidth() / 2 - 64, true, function() {
+          console.log("destroying guest");
+          guest.destroy();
+        });
+        if (npcCount < Game.guests.files.length) {
+          animateGuest();
+        }
+      });
+    });           
+  };
+  animateGuest();
 });
 
 Crafty.scene('PlayerSelect', function() {
+  Game.map.startX = Game.constants.initX;
+  Game.map.startY = Game.constants.initY;
   Crafty.e('2D, DOM, Text')
     .text('Select your player')
     .attr({ x:0, y:128, w:Game.getViewWidth()})
-    .textFont({'size': '24px'})
+    .textFont({'size': '28px'})
     .css($text_css);
     
-    Crafty.e('Player1')
+    var player = Crafty.e('Player1')
       .at(8, 8)
       .bind('Click', function() {
         console.log("Clicked 1st char!!");
         Game.map.pc = 'Player1';
+        Game.map.p2 = 'Player2';
         Crafty.scene('Game');
       });
-    Crafty.e('Player2')
+    player.configure(false);
+    player = Crafty.e('Player2')
       .at(16, 8)
       .bind('Click', function() {
         console.log("Clicked 2nd char!!");
         Game.map.pc = 'Player2';
+        Game.map.p2 = 'Player1';
         Crafty.scene('Game');
       });
+    player.configure(false);
 });
  
 // Loading scene
@@ -129,6 +173,7 @@ Crafty.scene('PlayerSelect', function() {
 Crafty.scene('Loading', function() {
   // Draw some text for the player to see in case the file
   //  takes a noticeable amount of time to load
+  Crafty.background('#BBBBFF');
   Crafty.e('2D, DOM, Text')
     .text('Loading; please wait...')
     .attr({ x: 0, y: Game.getViewHeight()/2 - 24, w: Game.getViewWidth() })
@@ -154,7 +199,8 @@ Crafty.scene('Loading', function() {
       'assets/body_m5.png',
       'assets/hair1.png',
       'assets/andrew.png',
-      'assets/player2.png'
+      'assets/player2.png',
+      'assets/redButton.png'
       ],
       function() {
         // Once the image is loaded...
@@ -233,6 +279,10 @@ Crafty.scene('Loading', function() {
       
         Crafty.sprite(64, 256, 'assets/arrows-right.png', {
           spr_arrow_right: [0,0],
+        }, 0, 0);
+        
+        Crafty.sprite(256, 256, 'assets/redButton.png', {
+          spr_red_button: [0,0],
         }, 0, 0);
         
         for (var i = 0; i < Game.guests.files.length; i++) {

@@ -73,6 +73,8 @@ Crafty.c('WindowB', {
 //function GuestText () {
 Crafty.c('GuestText', {
   count: 0,
+  duration: Game.constants.textDuration,
+  cb: null,
   
   init: function() {
     this.requires('2D, Canvas, Color, Text')
@@ -84,16 +86,23 @@ Crafty.c('GuestText', {
       this.z = 2;
   },
   
-  start: function() {
+  start: function(duration, cb) {
+    if (duration) {
+      this.duration = duration;
+    }
     this.count = 0;
     this.visible = true;
+    this.cb = cb;
   },
   
   onRender: function() {
     if (this.visible) {
-      if (this.count >= Game.constants.textDuration) {
+      if (this.count >= this.duration) {
         console.log('making text invisible');
         this.visible = false;
+        if (this.cb) {
+          this.cb();
+        }
       }
       this.count++;
     }
@@ -117,8 +126,15 @@ Crafty.c('GuestHair', {
 });
 
 Crafty.c('Guest', {
+  xStart: 0,
+  yStart: 0,
+  xAnimDist: 0,
+  yAnimDist: 0,
+  animCb: null,
   xDiff: 0,
   yDiff: 0,
+  shouldWalk: true,
+  animatingMove: false,
   renderCount: 0,
   bounceCount: 0,
   name: "Steve",
@@ -158,10 +174,34 @@ Crafty.c('Guest', {
     this.myHair.shift(this.x, this.y, 0, 0);
     this.myFace.ready = true;
     this.myFace.trigger("Invalidate");
+    this.setAnimation();
     console.log('myFace is ' + this.myFace + ' with image ' + this.myFace.img);
   },
   
+  setShouldWalk: function(walk) {
+    this.shouldWalk = walk;
+  },
+  
   onRender: function() {
+    if (this.animatingMove) {
+      var distX = Math.abs(this.x - this.xStart);
+      var distY = Math.abs(this.y - this.yStart);
+      // console.log("Moved a dist of " + distX + "," + distY + " so far, need to reach " + this.xAnimDist + ", " + this.yAnimDist);
+      this.renderCount++;
+      if (this.renderCount > 500 || (distX >= this.xAnimDist && distY >= this.yAnimDist)) {
+        this.animatingMove = false;
+        this.xDiff = 0;
+        this.yDiff = 0;
+        this.setAnimation();
+        if (this.animCb) {
+          this.animCb();
+        }
+        return;
+      }
+      this.doMove(false);
+    } else if (!this.shouldWalk) {
+      return;
+    }
     if (this.renderCount % Game.map_size.tile.width == 0) {
       this.bounceCount = 0;
       
@@ -201,16 +241,57 @@ Crafty.c('Guest', {
 //     this.myText.attr({ x: this.x, y: this.y - Game.map_size.tile.height / 2 });
   },
   
+  animateMove: function(dist, isHorizontal, cb) {
+    console.log('animateMove called with dist ' + dist + ' horiz? ' + isHorizontal);
+    var xDist, yDist;
+    if (isHorizontal) {
+      xDist = dist;
+      yDist = 0;
+    } else {
+      xDist = 0;
+      yDist = dist;
+    }
+    this.xDiff = 0;
+    this.yDiff = 0;
+    this.xAnimDist = Math.abs(xDist);
+    this.yAnimDist = Math.abs(yDist);
+    if (xDist < 0) {
+      this.xDiff = -1.5;
+    } else if (xDist > 0) {
+      this.xDiff = 1.5;
+    } else if (yDist < 0) {
+      this.yDiff = -1;
+    } else if (yDist > 0) {
+      this.yDiff = 0;
+    } else {
+      return;
+    }
+    this.setAnimation();
+    this.animatingMove = true;
+    this.animCb = cb;
+    this.xStart = this.x;
+    this.yStart = this.y;
+    this.renderCount = 0;
+    console.log('Animating move from ' + this.xStart + ", " + this.yStart
+      + " a distance of " + this.xAnimDist + ", " + this.yAnimDist);
+  },
+  
   doMove: function(revert) {
     var diff;
     if (revert) diff = -this.xDiff
     else diff = this.xDiff;
-    this.x = Math.max(Game.map_size.tile.width, this.x + diff);
-    this.x = Math.min((Game.map_size.windowWidth - 3) * Game.map_size.tile.width, this.x);
+    this.x += diff;
+    
     if (revert) diff = -this.yDiff
     else diff = this.yDiff;
-    this.y = Math.max(Game.map_size.tile.height, this.y + diff);
-    this.y = Math.min((Game.map_size.windowHeight - 4) * Game.map_size.tile.height, this.y);
+    this.y += diff;
+    
+    if (!this.animatingMove) {
+      this.x = Math.max(Game.map_size.tile.width, this.x);
+      this.x = Math.min((Game.map_size.windowWidth - 3) * Game.map_size.tile.width, this.x);
+      this.y = Math.max(Game.map_size.tile.height, this.y);
+      this.y = Math.min((Game.map_size.windowHeight - 4) * Game.map_size.tile.height, this.y);
+    }
   },
 
   stopOnSolids: function() {
@@ -265,9 +346,9 @@ Crafty.c('Guest', {
     }
   },
   
-  showText: function() {
+  showText: function(duration, cb) {
     console.log('showing text ' + this.myText._text + " at " + this.x + ", " + this.y);
-    this.myText.start();
+    this.myText.start(duration, cb);
   }
 });
 
@@ -288,16 +369,21 @@ Crafty.c('Player2', {
 // This is the player-controlled character
 Crafty.c('PlayerCharacter', {
   init: function() {
-    this.requires('Actor, Fourway, Collision, Keyboard, SpriteAnimation, Mouse')
-      .fourway(4)
+    this.requires('Actor, Fourway, Collision, Keyboard, SpriteAnimation, Mouse');
+    this.z = 1;
+  },
+  
+  configure: function(canControl) {
+    if (canControl) {
+      this.fourway(4)
       .stopOnSolids()
-      .reel('PlayerUp', 600, 0, 0, 3)
-      .reel('PlayerRight', 600, 0, 1, 3)
-      .reel('PlayerDown', 600, 0, 2, 3)
-      .reel('PlayerLeft', 600, 0, 3, 3)
       .bind('NewDirection', this.changeDirection)
       .bind('KeyDown', this.handleSpace);
-    this.z = 1;
+    }
+    this.reel('PlayerUp', 600, 0, 0, 3)
+      .reel('PlayerRight', 600, 0, 1, 3)
+      .reel('PlayerDown', 600, 0, 2, 3)
+      .reel('PlayerLeft', 600, 0, 3, 3);
   },
   
   // Registers a stop-movement function to be called when
@@ -338,6 +424,12 @@ Crafty.c('PlayerCharacter', {
         var guest = result[0].obj;
         console.log("Hitting guest " + guest.name);
         guest.showText();
+      } else {
+        result = this.hit('PlayerCharacter');
+        if (result.length > 0) {
+          console.log("Hit pc " + result[0].obj);
+          Crafty.scene('Victory');
+        }
       }
     }
   },
