@@ -74,7 +74,7 @@ Game = {
     count: 0, // number of guests currently in the scene
     files: ['assets/face-e.png', 'assets/face-r.png', 'assets/face-j.png', 'assets/face-t.png', 'assets/face-s.png'],
     sayings: ['Wat?', 'Noooo!', 'Yesss!', 'Guys?', 'Umm...'],
-    bodies: [0, 1, 2, 3, 4],
+    bodies: [0, 5, 2, 3, 4],
     hairs: [6, 10, 15, 9, 1],
     sprites: new Array(),
   },

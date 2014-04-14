@@ -392,10 +392,11 @@ Crafty.c('PlayerCharacter', {
       .bind('NewDirection', this.changeDirection)
       .bind('KeyDown', this.handleSpace);
     }
-    this.reel('PlayerUp', 600, 0, 0, 3)
-      .reel('PlayerRight', 600, 0, 1, 3)
-      .reel('PlayerDown', 600, 0, 2, 3)
-      .reel('PlayerLeft', 600, 0, 3, 3);
+    this.reel('PlayerDown', 800, 1, 0, 2)
+      .reel('PlayerRight', 1000, [[0, 1],[1, 1], [0, 1], [2, 1]])
+      .reel('PlayerLeft', 1000, [[0, 2],[1, 2], [0, 2], [2, 2]])
+      .reel('PlayerUp', 800, 1, 3, 2)
+      .reel('PlayerStanding',1000, 0, 0, 1);
   },
   
   // Registers a stop-movement function to be called when
@@ -456,7 +457,8 @@ Crafty.c('PlayerCharacter', {
     } else if (data.y < 0) {
         this.animate('PlayerUp', -1);
     } else {
-        this.pauseAnimation();
+        this.animate('PlayerStanding', 1);
+        //this.pauseAnimation();
     }
   }
 });

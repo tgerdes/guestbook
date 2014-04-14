@@ -78,9 +78,9 @@ Crafty.scene('Game', function() {
       guestIndex = guestIndex % Game.guests.files.length; // TODO remove when total is this length
       var guest = Crafty.e('Guest').at(x, y);
       guest.configureGuest(guestIndex);
-//       guest.animateMove(-64, false, function() {
-//         console.log('Finished animating');
-//       });
+      guest.animateMove(-256, false, function() {
+        console.log('Finished animating');
+      });
       Game.map.occupy(x, y, 2, 3);
       guestCount++;
     }
@@ -195,8 +195,9 @@ Crafty.scene('Loading', function() {
       'assets/body_m3.png',
       'assets/body_m4.png',
       'assets/body_m5.png',
+      'assets/bodyfm_m6.png',
       'assets/hair1.png',
-      'assets/andrew.png',
+      'assets/andrew2.png',
       'assets/player2.png',
       'assets/redButton.png',
       'assets/hair_short.png',
@@ -227,12 +228,16 @@ Crafty.scene('Loading', function() {
         Crafty.sprite(48, 96, 'assets/body_m4.png', {
           spr_guest3:  [0, 0],
         }, 0, 0);
-      
+
         Crafty.sprite(48, 96, 'assets/body_m5.png', {
           spr_guest4:  [0, 0],
         }, 0, 0);
+
+        Crafty.sprite(48, 96, 'assets/bodyfm_m6.png', {
+          spr_guest5:  [0, 0],
+        }, 0, 0);
       
-        Crafty.sprite(48, 96, 'assets/andrew.png', {
+        Crafty.sprite(48, 96, 'assets/andrew2.png', {
           spr_player: [0,0],
         }, 0, 0);
       
