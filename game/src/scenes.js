@@ -198,7 +198,7 @@ Crafty.scene('Loading', function() {
       'assets/bodyfm_m6.png',
       'assets/hair1.png',
       'assets/andrew2.png',
-      'assets/player2.png',
+      'assets/laura.png',
       'assets/redButton.png',
       'assets/hair_short.png',
       'assets/hair_long.png'
@@ -241,7 +241,7 @@ Crafty.scene('Loading', function() {
           spr_player: [0,0],
         }, 0, 0);
       
-        Crafty.sprite(48, 96, 'assets/player2.png', {
+        Crafty.sprite(48, 96, 'assets/laura.png', {
           spr_player2: [0,0],
         }, 0, 0);
       
