@@ -7,7 +7,7 @@ Game = {
   map_size: {
     // 640x800
     windowWidth: 25,
-    windowHeight: 21,
+    windowHeight: 19,
     width:  64,
     height: 64,
     tile: {
@@ -19,7 +19,7 @@ Game = {
   constants: {
     finaleTextDuration: 150,
     textDuration: 250,
-    guestsPerRoom: 10,
+    guestsPerRoom: 8,
     initX: 12,
     initY: 9
   },
@@ -70,7 +70,7 @@ Game = {
   },
   
   guests: {
-    total: 10, // total number of guests that were loaded
+    total: 20, // total number of guests that were loaded
     count: 0, // number of guests currently in the scene
     files: ['assets/face-e.png', 'assets/face-r.png', 'assets/face-j.png', 'assets/face-t.png', 'assets/face-s.png'],
     sayings: ['Wat?', 'Noooo!', 'Yesss!', 'Guys?', 'Umm...'],

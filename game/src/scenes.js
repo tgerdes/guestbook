@@ -16,7 +16,7 @@ Crafty.scene('Game', function() {
     Game.map.occupy(20, 9, 2, 3);
   }
  
-  // Place a tree at every edge square on our grid of 16x16 tiles
+  // Place a wall at every edge that isn't a door
   for (var x = 0; x <Game.map_size.windowWidth; x += 2) {
     for (var y = 0; y < Game.map_size.windowHeight; y += 2) {
       var at_edge = x == 0 || x == Game.map_size.windowWidth - 1 || y == 0 || y == Game.map_size.windowHeight - 1;
@@ -46,6 +46,7 @@ Crafty.scene('Game', function() {
         Game.map.occupy(x, y, 2, 2);
       }
     }
+    
     if (Game.map.id < Game.map.count) {
       Crafty.e('Door').at(Game.map_size.windowWidth - 1, Game.map.door - 2).direction(true);
     }
@@ -78,9 +79,9 @@ Crafty.scene('Game', function() {
       guestIndex = guestIndex % Game.guests.files.length; // TODO remove when total is this length
       var guest = Crafty.e('Guest').at(x, y);
       guest.configureGuest(guestIndex);
-      guest.animateMove(-256, false, function() {
-        console.log('Finished animating');
-      });
+//       guest.animateMove(-256, false, function() {
+//         console.log('Finished animating');
+//       });
       Game.map.occupy(x, y, 2, 3);
       guestCount++;
     }
@@ -171,6 +172,12 @@ Crafty.scene('PlayerSelect', function() {
 Crafty.scene('Loading', function() {
   // Draw some text for the player to see in case the file
   //  takes a noticeable amount of time to load
+  window.addEventListener("keydown", function(e) {
+    // space and arrow keys
+    if([32, 37, 38, 39, 40].indexOf(e.keyCode) > -1) {
+        e.preventDefault();
+    }
+  }, false);
   Crafty.background('#BBBBFF');
   Crafty.e('2D, DOM, Text')
     .text('Loading; please wait...')
