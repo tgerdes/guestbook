@@ -92,3 +92,6 @@ STATICFILES_DIRS = (
 
 DROPBOX_ACCESS_TOKEN = os.environ['DROPBOX_ACCESS_TOKEN']
 DROPBOX_PATH = "/Public/test/"
+
+MEDIA_ROOT = "/home/tgerdes/guestbook/media"
+MEDIA_URL = "/media/"

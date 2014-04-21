@@ -47,8 +47,10 @@
         $("#submit").on("click", function() {
             var d = new FormData(),
             xhr = new XMLHttpRequest();
-        d.append("image", dataURItoBlob($("img").attr("src")));
+        d.append("image", dataURItoBlob($("img").attr("src")), "image.png");
         d.append("comment", $("textarea").val());
+        d.append("body", 0);
+        d.append("hair", 0);
         xhr.open("post", "/upload", true);
         xhr.setRequestHeader("X-CSRFToken", getCookie("csrftoken"));
         xhr.send(d);

@@ -1,11 +1,14 @@
+import json
+from django.conf import settings
+from django.forms import ModelForm
 from django.http import HttpResponse
 from django.views.generic import View, DetailView, TemplateView
-from django.conf import settings
-from uuid import uuid1
-
-from dropbox.client import DropboxClient
 
 from .models import Message
+
+class MessageForm(ModelForm):
+    class Meta:
+        model = Message
 
 
 class RandomMessageDetailView(DetailView):
@@ -21,12 +24,21 @@ class HomeView(TemplateView):
     template_name = "home.html"
 
 
+class GuestsView(View):
+    def get(self, request):
+        messages = Message.objects.all()
+        data = [{'comment': message.comment,
+                 'body': message.body,
+                 'hair': message.hair,
+                 'image': message.image.url,
+                } for message in messages]
+        return HttpResponse(json.dumps(data),
+                            content_type='application/json')
+
+
 class UploadView(View):
     def post(self, request):
-        client = DropboxClient(settings.DROPBOX_ACCESS_TOKEN)
-        p = "{}{}.png".format(settings.DROPBOX_PATH, str(uuid1()))
-        client.put_file(p, request.FILES['image'])
-        share_url = client.share(p, short_url=False)['url'] + "?dl=1"
-        Message.objects.create(image_url=share_url,
-                               comment=request.POST['comment'])
+        form = MessageForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
         return HttpResponse("")
