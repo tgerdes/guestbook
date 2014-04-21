@@ -35,6 +35,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'south',
     'guestbook.entries',
+    'corsheaders',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -44,6 +45,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
 )
 
 ROOT_URLCONF = 'guestbook.urls'
@@ -95,3 +97,4 @@ DROPBOX_PATH = "/Public/test/"
 
 MEDIA_ROOT = "/home/tgerdes/guestbook/media"
 MEDIA_URL = "/media/"
+CORS_ORIGIN_ALLOW_ALL = True
