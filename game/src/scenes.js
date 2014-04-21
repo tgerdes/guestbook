@@ -80,7 +80,7 @@ Crafty.scene('Game', function() {
       if (guestIndex >= Game.guests.total) {
         break;
       }
-      guestIndex = guestIndex % Game.guests.files.length; // TODO remove when total is this length
+      guestIndex = guestIndex % Game.guests.guestViews.length; // TODO remove when total is this length
       var guest = Crafty.e('Guest').at(x, y);
       guest.configureGuest(guestIndex);
 //       guest.animateMove(-256, false, function() {
@@ -326,8 +326,30 @@ Crafty.scene('Loading', function() {
             }
           });
           Game.guests.sprites[i] = spriteName;
+          Game.guests.guestViews[i] = new GuestView(Game.guests.files[i],
+              Game.guests.sayings[i], Game.guests.bodies[i], Game.guests.hairs[i]);
         }
-        // Now that our sprites are ready to draw, start the game
-        Crafty.scene('PlayerSelect');
+        
+        var baseUrl = "http://ec2.thomgerdes.com/";
+        jQuery.get( "http://ec2.thomgerdes.com/guests", function( data ) {
+          console.log('get returned ' + data);
+          for (var i = 0; i < data.length; i++) {
+            console.log(data[i]);
+            var position = Game.guests.guestViews.length;
+            var guest = Game.guests.guestViews[position]
+              = new GuestView(baseUrl + data[i].image, data[i].comment, data[i].body, data[i].hair);
+            var spriteName = 'face' + position;
+            Crafty.face('FaceSprite' + position, guest.fileName, 640, 480);
+            Crafty.c(spriteName, {
+              myId: position,
+              init: function() {
+                this.requires('2D, Canvas, FaceSprite' + this.myId);
+                console.log('Initializing face' + this.myId);
+              }
+            });
+            Game.guests.sprites[position] = spriteName;
+          }
+          Crafty.scene('PlayerSelect');
+        });
       });
 });

@@ -158,7 +158,7 @@ Crafty.c('Guest', {
   },
   
   configureGuest: function(guestIndex) {
-    this.addComponent('spr_guest' + Game.guests.bodies[guestIndex]);
+    this.addComponent('spr_guest' + Game.guests.guestViews[guestIndex].body);
     this.bind('RenderScene', this.onRender)
       .stopOnSolids()
       .attr({w: 48, h: 96})
@@ -166,15 +166,14 @@ Crafty.c('Guest', {
       .reel('GuestRight', 600, 0, 1, 3)
       .reel('GuestLeft', 600, 0, 2, 3)
       .reel('GuestUp', 600, 0, 3, 3);
-    this.saying = Game.guests.sayings[guestIndex];
+    this.saying = Game.guests.guestViews[guestIndex].saying;
     this.myText = Crafty.e('GuestText');
     this.myText.text(this.saying);
     this.attach(this.myText);
-    this.myFace = Crafty.e('GuestFace');
     
     this.myFace = Crafty.e(Game.guests.sprites[guestIndex]);
-    this.myHair = Crafty.e('GuestHair'/* + Game.guests.hairs[guestIndex]*/);
-    this.myHair.setHair(Game.guests.hairs[guestIndex]);
+    this.myHair = Crafty.e('GuestHair');
+    this.myHair.setHair(Game.guests.guestViews[guestIndex].hair);
     this.attach(this.myFace);
     this.attach(this.myHair);
     this.myFace.w = 48;
@@ -467,3 +466,9 @@ Crafty.c('PlayerCharacter', {
   }
 });
 
+function GuestView (fileName, saying, body, hair) {
+  this.fileName = fileName;
+  this.saying = saying;
+  this.body = body;
+  this.hair = hair;
+}

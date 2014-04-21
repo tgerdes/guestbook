@@ -74,6 +74,7 @@ Game = {
   guests: {
     total: 20, // total number of guests that were loaded
     count: 0, // number of guests currently in the scene
+    guestViews: new Array(),
     files: ['assets/face-e.png', 'assets/face-r.png', 'assets/face-j.png', 'assets/face-t.png', 'assets/face-s.png'],
     sayings: ['Wat?', 'Noooo!', 'Yesss!', 'Guys?', 'Umm...'],
     bodies: [0, 5, 2, 3, 4],
@@ -108,9 +109,15 @@ Game = {
 },
 
 Crafty.extend({
-    face: function (spriteName, url) {
+    face: function (spriteName, url, sizeW, sizeH) {
         var temp, x, y, w, h, img;
         var paddingY = 0, paddingX = 0;
+        if (!sizeW) {
+          sizeW = 48;
+        }
+        if (!sizeH) {
+          sizeH = 66;
+        }
 
         var markSpritesReady = function() {
             this.ready = true;
@@ -132,7 +139,7 @@ Crafty.extend({
             this.requires("2D, Sprite");
             this.__trim = [0, 0, 0, 0];
             this.__image = url;
-            this.__coord = [0, 0, 48, 66];
+            this.__coord = [0, 0, sizeW, sizeH];
             this.__tile = 1;
             this.__tileh = 1;
             this.__padding = [paddingX, paddingY];
