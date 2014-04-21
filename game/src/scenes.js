@@ -3,7 +3,11 @@
 // Runs the core gameplay loop
 Crafty.scene('Game', function() {
   Game.map.init();
-  Crafty.background('#FFFFFF url(assets/floor-tile.png)');
+  if (Game.constants.tileSet == 0) {
+    Crafty.background('#FFFFFF url(assets/floor-tile.png)');
+  } else if (Game.constants.tileSet == 1) {
+    Crafty.background('#FFFFFF url(assets/floor-tile3.png)');
+  }
  
   // Player character, placed at 5, 5 on our grid
   this.player = Crafty.e(Game.map.pc).at(Game.map.startX, Game.map.startY);
@@ -38,10 +42,10 @@ Crafty.scene('Game', function() {
           } else {
             wall.setWall(2);
           }
-          if (y != 0) {
-            wall.rotation = 270;
-            wall.shift(0, 64, 0, 0)
-          }
+        }
+        if (y != 0 && y != Game.map_size.windowHeight - 1) {
+          wall.rotation = 270;
+          wall.shift(0, 64, 0, 0)
         }
         Game.map.occupy(x, y, 2, 2);
       }
@@ -53,7 +57,7 @@ Crafty.scene('Game', function() {
     if (Game.map.id > 0) {
       Crafty.e('Door').at(0, Game.map.door - 2).direction(false);
     }
-    if (Math.random() > 0.05) {
+    if (Math.random() > 0.1) {
       Crafty.e('Window').at(10, 0);
     } else {
       Crafty.e('WindowB').at(10,0);
@@ -184,12 +188,23 @@ Crafty.scene('Loading', function() {
     .attr({ x: 0, y: Game.getViewHeight()/2 - 24, w: Game.getViewWidth() })
     .textFont({'size': '24px'})
     .css($text_css);
+    
+  var wall1, wall2, wall3;
+  if (Game.constants.tileSet == 0) {
+    wall1 = 'assets/wall-1.png';
+    wall2 = 'assets/wall-2.png';
+    wall3 = 'assets/wall-3.png';
+  } else if (Game.constants.tileSet == 1) {
+    wall1 = 'assets/wall-p1.png';
+    wall2 = 'assets/wall-p2.png';
+    wall3 = 'assets/wall-p3.png';
+  }
  
   // Load our sprite map image
   Crafty.load([
-      'assets/wall-1.png',
-      'assets/wall-2.png',
-      'assets/wall-3.png',
+      wall1,
+      wall2,
+      wall3,
       'assets/corner.png',
       'assets/corner-small.png',
       'assets/corner-small2.png',
@@ -252,19 +267,15 @@ Crafty.scene('Loading', function() {
           spr_player2: [0,0],
         }, 0, 0);
       
-        Crafty.sprite(64, 64, 'assets/floor-1.png', {
-          spr_floor: [0,0],
-        }, 0, 0);
-      
-        Crafty.sprite(64, 64, 'assets/wall-1.png', {
+        Crafty.sprite(64, 64, wall1, {
           spr_wall_0: [0,0],
         }, 0, 0);
       
-        Crafty.sprite(64, 64, 'assets/wall-2.png', {
+        Crafty.sprite(64, 64, wall2, {
           spr_wall_1: [0,0],
         }, 0, 0);
         
-        Crafty.sprite(64, 64, 'assets/wall-3.png', {
+        Crafty.sprite(64, 64, wall3, {
           spr_wall_2: [0,0],
         }, 0, 0);
       

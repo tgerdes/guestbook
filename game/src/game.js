@@ -17,6 +17,7 @@ Game = {
   },
   
   constants: {
+    tileSet: 0,
     finaleTextDuration: 150,
     textDuration: 250,
     guestsPerRoom: 8,
@@ -27,6 +28,7 @@ Game = {
   map: {
     pc: null,
     p2: null,
+    lastDir: null,
     id: 0,
     count: 2,
     door: 8,

@@ -386,17 +386,20 @@ Crafty.c('PlayerCharacter', {
   },
   
   configure: function(canControl) {
-    if (canControl) {
-      this.fourway(4)
-      .stopOnSolids()
-      .bind('NewDirection', this.changeDirection)
-      .bind('KeyDown', this.handleSpace);
-    }
     this.reel('PlayerDown', 800, 1, 0, 2)
       .reel('PlayerRight', 1000, [[0, 1],[1, 1], [0, 1], [2, 1]])
       .reel('PlayerLeft', 1000, [[0, 2],[1, 2], [0, 2], [2, 2]])
       .reel('PlayerUp', 800, 1, 3, 2)
       .reel('PlayerStanding',1000, 0, 0, 1);
+    if (canControl) {
+      this.fourway(4)
+        .stopOnSolids()
+        .bind('NewDirection', this.changeDirection)
+        .bind('KeyDown', this.handleSpace);
+      if (Game.map.lastDir) {
+        this.changeDirection(Game.map.lastDir);
+      }
+    }
   },
   
   // Registers a stop-movement function to be called when
@@ -448,6 +451,7 @@ Crafty.c('PlayerCharacter', {
   },
   
   changeDirection: function(data) {
+    Game.map.lastDir = data;
     if (data.x > 0) {
         this.animate('PlayerRight', -1);
     } else if (data.x < 0) {
