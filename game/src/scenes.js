@@ -217,7 +217,13 @@ Crafty.scene('Loading', function() {
       'assets/body_m3.png',
       'assets/body_m4.png',
       'assets/body_m5.png',
-      'assets/bodyfm_m6.png',
+      'assets/body_m7.png',
+      'assets/body_f1.png',
+      'assets/body_f2.png',
+      'assets/body_f3.png',
+      'assets/body_f4.png',
+      'assets/body_f5.png',
+      'assets/body_f6.png',
       'assets/hair1.png',
       'assets/andrew2.png',
       'assets/laura.png',
@@ -255,10 +261,34 @@ Crafty.scene('Loading', function() {
           spr_guest4:  [0, 0],
         }, 0, 0);
 
-        Crafty.sprite(48, 96, 'assets/bodyfm_m6.png', {
+        Crafty.sprite(48, 96, 'assets/body_m7.png', {
           spr_guest5:  [0, 0],
         }, 0, 0);
+
+        Crafty.sprite(48, 96, 'assets/body_f1.png', {
+          spr_guest6:  [0, 0],
+        }, 0, 0);
+
+        Crafty.sprite(48, 96, 'assets/body_f2.png', {
+          spr_guest7:  [0, 0],
+        }, 0, 0);
+
+        Crafty.sprite(48, 96, 'assets/body_f3.png', {
+          spr_guest8:  [0, 0],
+        }, 0, 0);
+
+        Crafty.sprite(48, 96, 'assets/body_f4.png', {
+          spr_guest9:  [0, 0],
+        }, 0, 0);
       
+        Crafty.sprite(48, 96, 'assets/body_f5.png', {
+          spr_guest10:  [0, 0],
+        }, 0, 0);
+
+        Crafty.sprite(48, 96, 'assets/body_f6.png', {
+          spr_guest11:  [0, 0],
+        }, 0, 0);
+        
         Crafty.sprite(48, 96, 'assets/andrew2.png', {
           spr_player: [0,0],
         }, 0, 0);
@@ -331,7 +361,7 @@ Crafty.scene('Loading', function() {
         }
         
         var baseUrl = "http://ec2.thomgerdes.com/";
-        jQuery.get( "http://ec2.thomgerdes.com/guests", function( data ) {
+        jQuery.get( baseUrl + "guests", function( data ) {
           console.log('get returned ' + data);
           for (var i = 0; i < data.length; i++) {
             console.log(data[i]);
@@ -349,6 +379,9 @@ Crafty.scene('Loading', function() {
             });
             Game.guests.sprites[position] = spriteName;
           }
+          Crafty.scene('PlayerSelect');
+        }).fail(function() {
+          console.log('data request failed! Oh noes!')
           Crafty.scene('PlayerSelect');
         });
       });
