@@ -135,6 +135,50 @@ Crafty.c('GuestHair', {
   }
 });
 
+Crafty.c('SelectBar', {
+  player: 0,
+  p1: null,
+  p2: null,
+  
+  init: function() {
+    this.requires('2D, Canvas, spr_selection, Keyboard')
+        .bind('KeyDown', this.handleKey);
+  },
+  
+  setPlayers: function(player1, player2) {
+    this.p1 = player1;
+    this.p2 = player2;
+    this.x = player1.x - 8;
+    this.y = player1.y - 32;
+  },
+  
+  handleKey: function(e) {
+    if (this.isDown('SPACE')) {
+      if (this.player == 0) {
+        console.log("Clicked 1st char!!");
+        Game.map.pc = 'Player1';
+        Game.map.p2 = 'Player2';
+        Crafty.scene('Game');
+      } else {
+        console.log("Clicked 2nd char!!");
+        Game.map.pc = 'Player2';
+        Game.map.p2 = 'Player1';
+        Crafty.scene('Game');
+      }
+    } else if (this.isDown('LEFT_ARROW')) {
+      this.player = 0;
+      this.x = this.p1.x - 8;
+      this.y = this.p1.y - 32;
+      console.log('p1 is at ' + this.p1.x + ", " + this.p1.y);
+    } else if (this.isDown('RIGHT_ARROW')) {
+      this.player = 1;
+      this.x = this.p2.x - 8;
+      this.y = this.p2.y - 32;
+      console.log('p2 is at ' + this.p2.x + ", " + this.p2.y);
+    }
+  }
+});
+
 Crafty.c('Guest', {
   xStart: 0,
   yStart: 0,

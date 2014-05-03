@@ -159,7 +159,7 @@ Crafty.scene('PlayerSelect', function() {
         Crafty.scene('Game');
       });
     player.configure(false);
-    player = Crafty.e('Player2')
+    var player2 = Crafty.e('Player2')
       .at(16, 8)
       .bind('Click', function() {
         console.log("Clicked 2nd char!!");
@@ -167,7 +167,10 @@ Crafty.scene('PlayerSelect', function() {
         Game.map.p2 = 'Player1';
         Crafty.scene('Game');
       });
-    player.configure(false);
+    player2.configure(false);
+    
+    var selecter = Crafty.e('SelectBar');
+    selecter.setPlayers(player, player2);
 });
  
 // Loading scene
@@ -229,7 +232,8 @@ Crafty.scene('Loading', function() {
       'assets/laura.png',
       'assets/redButton.png',
       'assets/hair_short.png',
-      'assets/hair_long.png'
+      'assets/hair_long.png',
+      'assets/selection.png'
       ],
       function() {
         // Once the image is loaded...
@@ -343,6 +347,10 @@ Crafty.scene('Loading', function() {
         
         Crafty.sprite(256, 256, 'assets/redButton.png', {
           spr_red_button: [0,0],
+        }, 0, 0);
+        
+        Crafty.sprite(64, 16, 'assets/selection.png', {
+          spr_selection: [0,0],
         }, 0, 0);
         
         for (var i = 0; i < Game.guests.files.length; i++) {
