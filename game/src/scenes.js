@@ -217,7 +217,7 @@ Crafty.scene('Loading', function() {
       'assets/body_m3.png',
       'assets/body_m4.png',
       'assets/body_m5.png',
-      'assets/body_m7.png',
+      'assets/body_m6.png',
       'assets/body_f1.png',
       'assets/body_f2.png',
       'assets/body_f3.png',
@@ -261,7 +261,7 @@ Crafty.scene('Loading', function() {
           spr_guest4:  [0, 0],
         }, 0, 0);
 
-        Crafty.sprite(48, 96, 'assets/body_m7.png', {
+        Crafty.sprite(48, 96, 'assets/body_m6.png', {
           spr_guest5:  [0, 0],
         }, 0, 0);
 
