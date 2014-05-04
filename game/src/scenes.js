@@ -66,7 +66,6 @@ Crafty.scene('Game', function() {
     Crafty.e('Wall').at(0, Game.map_size.windowHeight - 1).setWall(5);
     Crafty.e('Wall').at(Game.map_size.windowWidth - 1, 0).setWall(4);
     Crafty.e('Wall').at(Game.map_size.windowWidth - 1, Game.map_size.windowHeight - 1).setWall(3);
-    
   }
  
   // Generate NPCs on the map in random locations
@@ -90,6 +89,8 @@ Crafty.scene('Game', function() {
       guestCount++;
     }
   }
+  
+  Crafty.e('MuteText').attr({ x: 8, y: 8 });
 }, function() {
 });
  
@@ -120,6 +121,7 @@ Crafty.scene('Victory', function() {
     .bind('Click', function() {
       Crafty.scene('PlayerSelect');
     });
+  Crafty.e('MuteText').attr({ x: 8, y: 8 });
     
   var npcCount = 0;
   var animateGuest = function() {
@@ -171,6 +173,11 @@ Crafty.scene('PlayerSelect', function() {
     
     var selecter = Crafty.e('SelectBar');
     selecter.setPlayers(player, player2);
+    
+    Crafty.e('MuteText').attr({ x: 8, y: 8 });
+    
+    Crafty.audio.stop();
+    Crafty.audio.play("bgMusic", -1);
 });
  
 // Loading scene
@@ -352,6 +359,8 @@ Crafty.scene('Loading', function() {
         Crafty.sprite(64, 16, 'assets/selection.png', {
           spr_selection: [0,0],
         }, 0, 0);
+        
+        Crafty.audio.add("bgMusic", "assets/567017_Finesse-Ingenuity.mp3");
         
         if (Game.constants.test) {
           for (var i = 0; i < Game.guests.files.length; i++) {

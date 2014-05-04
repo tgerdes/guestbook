@@ -70,6 +70,38 @@ Crafty.c('WindowB', {
   },
 });
 
+Crafty.c('MuteText', {
+  isMuted: false,
+  muteText: "Sound on",
+  unmuteText: "Sound off",
+  
+  init: function() {
+    this.requires('2D, Canvas, Text, Mouse')
+    .textColor('#000000')
+    //.color('rgb(255, 255, 255)')
+    .textFont({size: '18px'})
+    .bind('Click', function() {
+      if (!this.isMuted) {
+        Crafty.audio.mute();
+        this.isMuted = true;
+        this.text(this.unmuteText);
+      } else {
+        Crafty.audio.unmute();
+        this.isMuted = false;
+        this.text(this.muteText);
+      }
+    });
+    this.isMuted = Crafty.audio.muted;
+    if (this.isMuted) {
+      this.text(this.unmuteText);
+    } else {
+      this.text(this.muteText);
+    }
+    this.z = 2;
+    console.log('set text to ' + this._text);
+  }
+});
+
 //function GuestText () {
 Crafty.c('GuestText', {
   count: 0,
