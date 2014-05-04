@@ -77,7 +77,7 @@ Crafty.scene('Game', function() {
     console.log('Checking occupancy of ' + x + ', ' + y);
     if (!Game.map.isOccupied(x, y, 2, 3)) {
       var guestIndex = Game.map.id * Game.constants.guestsPerRoom + guestCount;
-      if (guestIndex >= Game.guests.total) {
+      if (guestIndex >= Game.getGuestCount()) {
         break;
       }
       guestIndex = guestIndex % Game.guests.guestViews.length; // TODO remove when total is this length
@@ -353,19 +353,21 @@ Crafty.scene('Loading', function() {
           spr_selection: [0,0],
         }, 0, 0);
         
-        for (var i = 0; i < Game.guests.files.length; i++) {
-          var spriteName = 'face' + i;
-          Crafty.face('FaceSprite' + i, Game.guests.files[i]);
-          Crafty.c(spriteName, {
-            myId: i,
-            init: function() {
-              this.requires('2D, Canvas, FaceSprite' + this.myId);
-              console.log('Initializing face' + this.myId);
-            }
-          });
-          Game.guests.sprites[i] = spriteName;
-          Game.guests.guestViews[i] = new GuestView(Game.guests.files[i],
-              Game.guests.sayings[i], Game.guests.bodies[i], Game.guests.hairs[i]);
+        if (Game.constants.test) {
+          for (var i = 0; i < Game.guests.files.length; i++) {
+            var spriteName = 'face' + i;
+            Crafty.face('FaceSprite' + i, Game.guests.files[i]);
+            Crafty.c(spriteName, {
+              myId: i,
+              init: function() {
+                this.requires('2D, Canvas, FaceSprite' + this.myId);
+                console.log('Initializing face' + this.myId);
+              }
+            });
+            Game.guests.sprites[i] = spriteName;
+            Game.guests.guestViews[i] = new GuestView(Game.guests.files[i],
+                Game.guests.sayings[i], Game.guests.bodies[i], Game.guests.hairs[i]);
+          }
         }
         
         var baseUrl = "http://ec2.thomgerdes.com/";

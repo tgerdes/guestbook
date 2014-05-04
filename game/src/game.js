@@ -17,6 +17,7 @@ Game = {
   },
   
   constants: {
+    test: true,
     tileSet: 0,
     finaleTextDuration: 150,
     textDuration: 250,
@@ -35,7 +36,9 @@ Game = {
     startX: 12,
     startY: 9,
     init: function() {
-      this.count = Math.ceil(Game.guests.total / Game.constants.guestsPerRoom);
+      console.log("Guest count " + Game.getGuestCount());
+      this.count = Math.ceil(Game.getGuestCount() / Game.constants.guestsPerRoom);
+      if (this.count == 0) this.count = 1;
       this.occupied = new Array(Game.map_size.windowWidth);
       for (var x = 0; x < Game.map_size.windowWidth; x++) {
         this.occupied[x] = new Array(Game.map_size.windowHeight);
@@ -80,6 +83,14 @@ Game = {
     bodies: [6, 7, 8, 9, 5],
     hairs: [6, 10, 15, 9, 1],
     sprites: new Array(),
+  },
+    
+  getGuestCount: function() {
+    if (Game.constants.test) {
+      return Game.guests.total;
+    } else {
+      return Game.guests.guestViews.length;
+    }
   },
   
   getWidth: function() {
