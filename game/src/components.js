@@ -29,7 +29,7 @@ Crafty.c('Actor', {
 
 Crafty.c('Door', {
   init: function() {
-    this.requires('Actor').alpha = 0.12;
+    this.requires('Actor').alpha = 0.45;
   },
   
   direction: function(right) {
@@ -52,6 +52,17 @@ Crafty.c('Wall', {
     this.addComponent('spr_wall_' + which);
     this.attr({w: 64, h: 64});
   },
+});
+
+Crafty.c('Decoration', {
+  init: function() {
+    this.requires('Actor, Solid');
+  },
+  
+  setDecoration: function(which) {
+    this.addComponent('spr_decoration_' + which);
+    this.attr({w: 80, h: 60});
+  }
 });
 
 // A Tree is just an Actor with a certain color
@@ -80,6 +91,7 @@ Crafty.c('MuteText', {
     .textColor('#000000')
     //.color('rgb(255, 255, 255)')
     .textFont({size: '18px'})
+    .attr({ x: Game.getViewWidth() - 128, y: Game.getViewHeight() - 28 })
     .bind('Click', function() {
       if (!this.isMuted) {
         Crafty.audio.mute();
@@ -181,7 +193,7 @@ Crafty.c('SelectBar', {
     this.p1 = player1;
     this.p2 = player2;
     this.x = player1.x - 8;
-    this.y = player1.y - 32;
+    this.y = player1.y + 104;
   },
   
   handleKey: function(e) {
@@ -200,12 +212,12 @@ Crafty.c('SelectBar', {
     } else if (this.isDown('LEFT_ARROW')) {
       this.player = 0;
       this.x = this.p1.x - 8;
-      this.y = this.p1.y - 32;
+      this.y = this.p1.y + 104;
       console.log('p1 is at ' + this.p1.x + ", " + this.p1.y);
     } else if (this.isDown('RIGHT_ARROW')) {
       this.player = 1;
       this.x = this.p2.x - 8;
-      this.y = this.p2.y - 32;
+      this.y = this.p2.y + 104;
       console.log('p2 is at ' + this.p2.x + ", " + this.p2.y);
     }
   }

@@ -50,22 +50,37 @@ Crafty.scene('Game', function() {
         Game.map.occupy(x, y, 2, 2);
       }
     }
-    
-    if (Game.map.id < Game.map.count) {
-      Crafty.e('Door').at(Game.map_size.windowWidth - 1, Game.map.door - 2).direction(true);
+  }
+  if (Math.random() > 0.1) {
+    Crafty.e('Window').at(10, 0);
+  } else {
+    Crafty.e('WindowB').at(10,0);
+  }
+  Crafty.e('Wall').at(0, 0).setWall(3);
+  Crafty.e('Wall').at(0, Game.map_size.windowHeight - 1).setWall(5);
+  Crafty.e('Wall').at(Game.map_size.windowWidth - 1, 0).setWall(4);
+  Crafty.e('Wall').at(Game.map_size.windowWidth - 1, Game.map_size.windowHeight - 1).setWall(3);
+
+  if (Game.map.id < Game.map.count - 1) {
+    console.log("count was " + Game.map.count + " on map " + Game.map.id);
+    Crafty.e('Door').at(Game.map_size.windowWidth - 1, Game.map.door - 2).direction(true);
+  }
+  if (Game.map.id > 0) {
+    Crafty.e('Door').at(0, Game.map.door - 2).direction(false);
+  }
+  
+  //Put 1-3 random tables out
+  var tableCount = 0;
+  var maxTables = Math.ceil(Math.random() * 3);
+  console.log("Adding " + maxTables + " tables");
+  while (tableCount < maxTables) {
+    var x = Math.floor(Math.random() * (Game.map_size.windowWidth - 9)) + 4;
+    var y = Math.floor(Math.random() * (Game.map_size.windowHeight - 5)) + 2;
+    if (!Game.map.isOccupied(x, y, 3, 2)) {
+      Crafty.e('Decoration').at(x, y).setDecoration(0);
+      Game.map.occupy(x, y, 3, 2);
+      tableCount++;
     }
-    if (Game.map.id > 0) {
-      Crafty.e('Door').at(0, Game.map.door - 2).direction(false);
-    }
-    if (Math.random() > 0.1) {
-      Crafty.e('Window').at(10, 0);
-    } else {
-      Crafty.e('WindowB').at(10,0);
-    }
-    Crafty.e('Wall').at(0, 0).setWall(3);
-    Crafty.e('Wall').at(0, Game.map_size.windowHeight - 1).setWall(5);
-    Crafty.e('Wall').at(Game.map_size.windowWidth - 1, 0).setWall(4);
-    Crafty.e('Wall').at(Game.map_size.windowWidth - 1, Game.map_size.windowHeight - 1).setWall(3);
   }
  
   // Generate NPCs on the map in random locations
@@ -90,7 +105,7 @@ Crafty.scene('Game', function() {
     }
   }
   
-  Crafty.e('MuteText').attr({ x: 8, y: 8 });
+  Crafty.e('MuteText');
 }, function() {
 });
  
@@ -121,7 +136,7 @@ Crafty.scene('Victory', function() {
     .bind('Click', function() {
       Crafty.scene('PlayerSelect');
     });
-  Crafty.e('MuteText').attr({ x: 8, y: 8 });
+  Crafty.e('MuteText');
     
   var npcCount = 0;
   var animateGuest = function() {
@@ -161,6 +176,15 @@ Crafty.scene('PlayerSelect', function() {
         Crafty.scene('Game');
       });
     player.configure(false);
+    
+    Crafty.e("2D, Canvas, Text")
+      .text("Andrew")
+      .textFont({size: '14px'})
+      .attr({ x: player.x, y: player.y + 104})
+      .textColor('#000000')
+      .z = 2;
+
+
     var player2 = Crafty.e('Player2')
       .at(16, 8)
       .bind('Click', function() {
@@ -171,10 +195,17 @@ Crafty.scene('PlayerSelect', function() {
       });
     player2.configure(false);
     
+    Crafty.e("2D, Canvas, Text")
+      .text("Laura")
+      .textFont({size: '14px'})
+      .attr({ x: player2.x + 5, y: player2.y + 104})
+      .textColor('#000000')
+      .z = 2;
+    
     var selecter = Crafty.e('SelectBar');
     selecter.setPlayers(player, player2);
     
-    Crafty.e('MuteText').attr({ x: 8, y: 8 });
+    Crafty.e('MuteText');
     
     Crafty.audio.stop();
     Crafty.audio.play("bgMusic", -1);
@@ -215,6 +246,7 @@ Crafty.scene('Loading', function() {
       wall1,
       wall2,
       wall3,
+      'assets/table_round.png',
       'assets/corner.png',
       'assets/corner-small.png',
       'assets/corner-small2.png',
@@ -358,6 +390,10 @@ Crafty.scene('Loading', function() {
         
         Crafty.sprite(64, 16, 'assets/selection.png', {
           spr_selection: [0,0],
+        }, 0, 0);
+      
+        Crafty.sprite(64, 48, 'assets/table_round.png', {
+          spr_decoration_0: [0,0],
         }, 0, 0);
         
         Crafty.audio.add("bgMusic", "assets/567017_Finesse-Ingenuity.mp3");
