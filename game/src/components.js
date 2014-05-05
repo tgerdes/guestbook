@@ -121,13 +121,31 @@ Crafty.c('GuestText', {
   cb: null,
   
   init: function() {
-    this.requires('2D, Canvas, Color, Text')
+    this.requires('2D, DOM, Color, Text')
       .bind('RenderScene', this.onRender)
       .textColor('#000000')
       .textFont({ size: '18px'})
+      .css({"background-color": "white", "text-align": "center"})
       .color('rgb(255, 255, 255)');
       this.visible = false
       this.z = 2;
+  },
+  
+  setTextAndUpdate: function(textStr) {
+    this.text(textStr);
+    var ctx = Crafty.canvas.context;
+    ctx.font = this._fontString();
+    var w = ctx.measureText(textStr).width;
+
+    var size = (this._textFont.size || this.defaultSize);
+    var h = 1.2 * this._getFontHeight(size);
+    
+    if (w > 256) {
+      w = 256;
+      h = 2 * h;
+    }
+    this.w = w;
+    this.h = h;
   },
   
   start: function(duration, cb) {
@@ -223,6 +241,40 @@ Crafty.c('SelectBar', {
   }
 });
 
+Crafty.c('Marvin', {
+  saying: "I've got this terrible pain in all the diodes down my left side.",
+  myText: null,
+  renderCount: 0,
+  
+  init: function() {
+    this.requires('Actor, spr_marvin');
+    this.myText = Crafty.e('GuestText');
+    this.myText.setTextAndUpdate(this.saying);
+    this.attach(this.myText);
+    var xShift = 0;
+    if (this.myText._w > 48) {
+      xShift = (this.myText._w - 48) / 2;
+    }
+    
+    this.myText.shift(this.x - xShift, this.y - 24, 0, 0);
+    this.bind('RenderScene', this.onRender);
+  },
+  
+  onRender: function() {
+    if (this.renderCount % Game.map_size.tile.width == 0) {
+      if (Math.random() < 0.01) {
+        this.showText();
+      }
+    }
+    this.renderCount++;
+  },
+  
+  showText: function(duration, cb) {
+    console.log('showing text ' + this.myText._text + " at " + this.x + ", " + this.y);
+    this.myText.start(duration, cb);
+  }
+});
+
 Crafty.c('Guest', {
   xStart: 0,
   yStart: 0,
@@ -256,7 +308,7 @@ Crafty.c('Guest', {
       .reel('GuestUp', 600, 0, 3, 3);
     this.saying = Game.guests.guestViews[guestIndex].saying;
     this.myText = Crafty.e('GuestText');
-    this.myText.text(this.saying);
+    this.myText.setTextAndUpdate(this.saying);
     this.attach(this.myText);
     
     this.myFace = Crafty.e(Game.guests.sprites[guestIndex]);
@@ -267,7 +319,12 @@ Crafty.c('Guest', {
     this.myFace.w = 48;
     this.myFace.h = 66;
     
-    this.myText.shift(this.x, this.y - 24, 0, 0);
+    var xShift = 0;
+    if (this.myText._w > 48) {
+      xShift = (this.myText._w - 48) / 2;
+    }
+    
+    this.myText.shift(this.x - xShift, this.y - 24, 0, 0);
     this.myFace.shift(this.x, this.y, 0, 0);
     this.myHair.shift(this.x, this.y, 0, 0);
     this.myFace.ready = true;
@@ -395,6 +452,7 @@ Crafty.c('Guest', {
   stopOnSolids: function() {
     this.onHit('Solid', this.avoidGuest);
     this.onHit('Guest', this.avoidGuest);
+    this.onHit('Marvin', this.avoidGuest);
     this.onHit(Game.map.p2, this.avoidGuest);
     this.onHit(Game.map.pc, this.stopMovement);
     return this;
@@ -532,6 +590,12 @@ Crafty.c('PlayerCharacter', {
         if (result.length > 0) {
           console.log("Hit pc " + result[0].obj);
           Crafty.scene('Victory');
+        } else {
+          result = this.hit('Marvin');
+          if (result.length > 0) {
+            console.log("Hit Marvin, ouch!");
+            result[0].obj.showText();
+          }
         }
       }
     }

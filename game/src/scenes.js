@@ -69,7 +69,7 @@ Crafty.scene('Game', function() {
     Crafty.e('Door').at(0, Game.map.door - 2).direction(false);
   }
   
-  //Put 1-3 random tables out
+  // Put 1-3 random tables out
   var tableCount = 0;
   var maxTables = Math.ceil(Math.random() * 3);
   console.log("Adding " + maxTables + " tables");
@@ -80,6 +80,20 @@ Crafty.scene('Game', function() {
       Crafty.e('Decoration').at(x, y).setDecoration(0);
       Game.map.occupy(x, y, 3, 2);
       tableCount++;
+    }
+  }
+  
+  // Sometimes place Marvin
+  if (Math.random() < .05) {
+    var placed = false;
+    while (!placed) {
+      var x = Math.floor(Math.random() * (Game.map_size.windowWidth - 9)) + 4;
+      var y = Math.floor(Math.random() * (Game.map_size.windowHeight - 5)) + 2;
+      if (!Game.map.isOccupied(x, y, 2, 3)) {
+        Crafty.e('Marvin').at(x, y);
+        Game.map.occupy(x, y, 2, 3);
+        placed = true;
+      }
     }
   }
  
@@ -269,6 +283,7 @@ Crafty.scene('Loading', function() {
       'assets/hair1.png',
       'assets/andrew2.png',
       'assets/laura.png',
+      'assets/marvin.png',
       'assets/redButton.png',
       'assets/hair_short.png',
       'assets/hair_long.png',
@@ -338,6 +353,10 @@ Crafty.scene('Loading', function() {
       
         Crafty.sprite(48, 96, 'assets/laura.png', {
           spr_player2: [0,0],
+        }, 0, 0);
+      
+        Crafty.sprite(64, 92, 'assets/marvin.png', {
+          spr_marvin: [0,0],
         }, 0, 0);
       
         Crafty.sprite(64, 64, wall1, {
