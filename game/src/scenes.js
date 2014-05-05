@@ -120,6 +120,7 @@ Crafty.scene('Game', function() {
   }
   
   Crafty.e('MuteText');
+  Crafty.e('VisitedText').updateCount();
 }, function() {
 });
  

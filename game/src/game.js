@@ -77,10 +77,11 @@ Game = {
   guests: {
     total: 20, // total number of guests that were loaded
     count: 0, // number of guests currently in the scene
+    visited: 0,
     guestViews: new Array(),
     files: ['assets/face-e.png', 'assets/face-r.png', 'assets/face-j.png', 'assets/face-t.png', 'assets/face-s.png'],
     sayings: ['Wat?', 'Noooo!', 'Yesss!', 'Guys?', 'Umm...'],
-    bodies: [6, 7, 8, 9, 5],
+    bodies: [1, 6, 2, 3, 5],
     hairs: [6, 10, 15, 9, 1],
     sprites: new Array(),
   },
@@ -116,6 +117,13 @@ Game = {
     Crafty.background('rgb(60, 140, 20)');
     // Simply start the "Loading" scene to get things going
     Crafty.scene('Loading');
+  },
+  
+  updateGuestCount: function() {
+    var vText = Crafty("VisitedText");
+    if (vText) {
+      vText.updateCount();
+    }
   }
 },
 

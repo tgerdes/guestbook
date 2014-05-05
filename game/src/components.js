@@ -87,30 +87,51 @@ Crafty.c('MuteText', {
   unmuteText: "Sound off",
   
   init: function() {
-    this.requires('2D, Canvas, Text, Mouse')
+    this.requires('2D, Canvas, Color, Text, Mouse')
     .textColor('#000000')
-    //.color('rgb(255, 255, 255)')
     .textFont({size: '18px'})
-    .attr({ x: Game.getViewWidth() - 128, y: Game.getViewHeight() - 28 })
     .bind('Click', function() {
       if (!this.isMuted) {
         Crafty.audio.mute();
         this.isMuted = true;
         this.text(this.unmuteText);
+        this.color('#999999');
       } else {
         Crafty.audio.unmute();
         this.isMuted = false;
         this.text(this.muteText);
+        this.color('#ffffff');
       }
+      this.attr({ x: Game.getViewWidth() - 128, y: Game.getViewHeight() - 28, h: 20, w: 80 })
     });
     this.isMuted = Crafty.audio.muted;
     if (this.isMuted) {
       this.text(this.unmuteText);
+      this.color('#999999');
     } else {
       this.text(this.muteText);
+      this.color('#ffffff');
     }
+    this.attr({ x: Game.getViewWidth() - 128, y: Game.getViewHeight() - 28, h: 20, w: 80 })
     this.z = 2;
+    Crafty.e('2D, Canvas, Color')
+      .color('#000000')
+      .attr({ x: this.x - 2, y: this.y - 2, w: this.w + 4, h: this.h + 4});
     console.log('set text to ' + this._text);
+  }
+});
+
+Crafty.c('VisitedText', {
+  init: function() {
+    this.requires('2D, Canvas, Text')
+      .textColor('#000000')
+      .textFont({ size: '18px'})
+      .attr({ x: 64, y: Game.getViewHeight() - 28 })
+      .z = 2;
+  },
+  
+  updateCount: function() {
+    this.text("Talked to " + Game.guests.visited + " / " + Game.getGuestCount() + " guests.");
   }
 });
 
@@ -125,8 +146,8 @@ Crafty.c('GuestText', {
       .bind('RenderScene', this.onRender)
       .textColor('#000000')
       .textFont({ size: '18px'})
-      .css({"background-color": "white", "text-align": "center"})
-      .color('rgb(255, 255, 255)');
+      .color('rgb(255, 255, 255)')
+      .css({"text-align": "center"});
       this.visible = false
       this.z = 2;
   },
@@ -292,6 +313,7 @@ Crafty.c('Guest', {
   myText: null,
   myFace: null,
   myHair: null,
+  myGuest: null,
   
   init: function() {
     this.requires('Actor, Collision, SpriteAnimation');
@@ -306,14 +328,15 @@ Crafty.c('Guest', {
       .reel('GuestRight', 600, 0, 1, 3)
       .reel('GuestLeft', 600, 0, 2, 3)
       .reel('GuestUp', 600, 0, 3, 3);
-    this.saying = Game.guests.guestViews[guestIndex].saying;
+    this.myGuest = Game.guests.guestViews[guestIndex];
+    this.saying = this.myGuest.saying;
     this.myText = Crafty.e('GuestText');
     this.myText.setTextAndUpdate(this.saying);
     this.attach(this.myText);
     
     this.myFace = Crafty.e(Game.guests.sprites[guestIndex]);
     this.myHair = Crafty.e('GuestHair');
-    this.myHair.setHair(Game.guests.guestViews[guestIndex].hair);
+    this.myHair.setHair(this.myGuest.hair);
     this.attach(this.myFace);
     this.attach(this.myHair);
     this.myFace.w = 48;
@@ -585,6 +608,11 @@ Crafty.c('PlayerCharacter', {
         var guest = result[0].obj;
         console.log("Hitting guest " + guest.name);
         guest.showText();
+        if (!guest.myGuest.visited) {
+          guest.myGuest.visited = true;
+          Game.guests.visited++;
+          Game.updateGuestCount();
+        }
       } else {
         result = this.hit('PlayerCharacter');
         if (result.length > 0) {
@@ -623,4 +651,5 @@ function GuestView (fileName, saying, body, hair) {
   this.saying = saying;
   this.body = body;
   this.hair = hair;
+  this.visited = false;
 }
