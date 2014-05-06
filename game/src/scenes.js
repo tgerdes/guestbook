@@ -164,7 +164,7 @@ Crafty.scene('Victory', function() {
           console.log("destroying guest");
           guest.destroy();
         });
-        if (npcCount < Game.guests.files.length) {
+        if (npcCount < Game.guests.guestViews.length) {
           animateGuest();
         }
       });
