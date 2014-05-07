@@ -1,0 +1,171 @@
+@-webkit-keyframes front_animate {
+  from { background-position: 0px 0px; }
+  to { background-position: -144px 0px; }
+}
+
+@-moz-keyframes front_animate {
+  from { background-position: 0px 0px; }
+  to { background-position: -144px 0px; }
+}
+@-o-keyframes front_animate {
+  from { background-position: 0px 0px; }
+  to { background-position: -144px 0px; }
+}
+@keyframes front_animate {
+  from { background-position: 0px 0px; }
+  to { background-position: -144px 0px; }
+}
+
+@-webkit-keyframes back_animate {
+  from { background-position: 0px 96px; }
+  to { background-position: -144px 96px; }
+}
+
+@-moz-keyframes back_animate {
+  from { background-position: 0px 96px; }
+  to { background-position: -144px 96px; }
+}
+@-o-keyframes back_animate {
+  from { background-position: 0px 96px; }
+  to { background-position: -144px 96px; }
+}
+@keyframes back_animate {
+  from { background-position: 0px 96px; }
+  to { background-position: -144px 96px; }
+}
+
+div.body {
+    width: 48px;
+    height: 96px;
+    background-position-y: 96px;
+}
+
+div.sprite-preview>div.body {
+    -webkit-animation: front_animate .6s steps(3) infinite;
+    -moz-animation: front_animate .6s steps(3) infinite;
+    -o-animation: front_animate .6s steps(3) infinite;
+    animation: front_animate .6s steps(3) infinite;
+}
+
+div.sprite-preview.back>div.body { 
+    -webkit-animation: back_animate .6s steps(3) infinite;
+    -moz-animation: back_animate .6s steps(3) infinite;
+    -o-animation: back_animate .6s steps(3) infinite;
+    animation: back_animate .6s steps(3) infinite;
+}
+
+div.sprite-preview>div.hair {
+    width: 48;
+    height: 66;
+    display: none;
+}
+
+div.sprite-preview.back>div.hair {
+    display: block;
+}
+
+div.sprite-preview>div.face {
+    width: 48;
+    height: 66;
+    display: block;
+}
+
+div.sprite-preview.back>div.hair {
+    display: none;
+}
+
+div.body0 {
+    background-image:url(/static/body_f1.png);
+}
+div.body1 {
+    background-image:url(/static/body_f2.png);
+}
+div.body2 {
+    background-image:url(/static/body_f3.png);
+}
+div.body3 {
+    background-image:url(/static/body_f4.png);
+}
+div.body4 {
+    background-image:url(/static/body_f5.png);
+}
+div.body5 {
+    background-image:url(/static/body_f6.png);
+}
+div.body6 {
+    background-image:url(/static/body_m1.png);
+}
+div.body7 {
+    background-image:url(/static/body_m2.png);
+}
+div.body8 {
+    background-image:url(/static/body_m3.png);
+}
+div.body9 {
+    background-image:url(/static/body_m4.png);
+}
+div.body10 {
+    background-image:url(/static/body_m5.png);
+}
+div.body11 {
+    background-image:url(/static/body_m6.png);
+}
+div.hair0 {
+    background-image:url(/static/hair_long.png);
+    background-position: 0px -0px;
+}
+div.hair1 {
+    background-image:url(/static/hair_long.png);
+    background-position: 0px -66px;
+}
+div.hair2 {
+    background-image:url(/static/hair_long.png);
+    background-position: 0px -132px;
+}
+div.hair3 {
+    background-image:url(/static/hair_long.png);
+    background-position: 0px -198px;
+}
+div.hair4 {
+    background-image:url(/static/hair_long.png);
+    background-position: 0px -264px;
+}
+div.hair5 {
+    background-image:url(/static/hair_long.png);
+    background-position: 0px -330px;
+}
+div.hair6 {
+    background-image:url(/static/hair_short.png);
+    background-position: 0px -0px;
+}
+div.hair7 {
+    background-image:url(/static/hair_short.png);
+    background-position: 0px -66px;
+}
+div.hair8 {
+    background-image:url(/static/hair_short.png);
+    background-position: 0px -132px;
+}
+div.hair9 {
+    background-image:url(/static/hair_short.png);
+    background-position: 0px -198px;
+}
+div.hair10 {
+    background-image:url(/static/hair_short.png);
+    background-position: 0px -264px;
+}
+div.hair11 {
+    background-image:url(/static/hair_short.png);
+    background-position: 0px -330px;
+}
+div.face {
+    width: 48; height: 66;
+}
+
+div.sprite-preview>div { 
+    position: absolute;
+}
+
+div.sprite-preview { 
+    height: 96px;
+}

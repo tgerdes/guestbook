@@ -5,12 +5,21 @@ video {
     transform: scale(-1, 1);
     filter: FlipH;
 }
+div.video-hint {
+    position: absolute;
+    text-align: center;
+    vertical-align: middle;
+    line-height: 480px;
+    width: 640px;
+    height: 480px;
+}
 div.content {
   width:  640px;
   margin-left: auto;
   margin-right: auto;
 }
-canvas {
+canvas,
+video {
   width:  640px;
   height: 480px;
 }

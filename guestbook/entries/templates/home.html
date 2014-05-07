@@ -5,12 +5,21 @@
 <script type="text/javascript" src="//code.jquery.com/jquery-1.10.2.min.js"></script>
 <script type="text/javascript" src="{% static "capture.js" %}"></script>
 <link type="text/css" rel="stylesheet" href="{% static "capture.css" %}">
+<link type="text/css" rel="stylesheet" href="{% static "sprites.css" %}">
 </head>
     <body>
         <div class="content">
         <div class="capture">
+          <div class="video-hint">
+              Please allow access to the camera!
+          </div>
           <video autoplay></video>
           <canvas width="640px" height="480px" style="display: none"></canvas>
+        </div>
+        <div class="sprite-preview">
+            <div class="face"></div>
+            <div class="body body0"></div>
+            <div class="hair hair0"></div>
         </div>
         <div class="preview">
             <div>

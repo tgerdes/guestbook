@@ -59,6 +59,8 @@
 
         navigator.getUserMedia({video: true}, function(stream) {
             video.src = window.URL.createObjectURL(stream);
+        },
+        function(err) {
         });
-    });
+        });
 })(jQuery);
