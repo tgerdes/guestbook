@@ -47,7 +47,7 @@ div.sprite-preview>div.body {
     animation: front_animate .6s steps(3) infinite;
 }
 
-div.sprite-preview.back>div.body { 
+div.sprite-preview.back>div.body {
     -webkit-animation: back_animate .6s steps(3) infinite;
     -moz-animation: back_animate .6s steps(3) infinite;
     -o-animation: back_animate .6s steps(3) infinite;
@@ -162,10 +162,12 @@ div.face {
     width: 48; height: 66;
 }
 
-div.sprite-preview>div { 
+div.sprite-preview>div,
+div.sprite-preview>img {
     position: absolute;
 }
 
-div.sprite-preview { 
+div.sprite-preview {
+    width: 48px;
     height: 96px;
 }

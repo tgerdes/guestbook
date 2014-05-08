@@ -30,7 +30,8 @@ class GuestsView(View):
         data = [{'comment': message.comment,
                  'body': message.body,
                  'hair': message.hair,
-                 'image': message.image.url,
+                 'image': message.thumb.url,
+                 'full_image': message.image.url,
                 } for message in messages]
         return HttpResponse(json.dumps(data),
                             content_type='application/json')

@@ -14,17 +14,31 @@
               Please allow access to the camera!
           </div>
           <video autoplay></video>
-          <canvas width="640px" height="480px" style="display: none"></canvas>
-        </div>
-        <div class="sprite-preview">
-            <div class="face"></div>
-            <div class="body body0"></div>
-            <div class="hair hair0"></div>
+          <canvas class="capture" width="640px" height="480px" style="display: none"></canvas>
         </div>
         <div class="preview">
             <div>
-                <img src="">
+                <img id="output">
             </div>
+            <table>
+                <tr>
+                    <th>Hair:</th>
+                    <th id="hairdown">&#8592;</th>
+                    <td rowspan="2">
+                        <div class="sprite-preview">
+                            <div class="body body0"></div>
+                            <img id="thumb">
+                            <div class="hair hair0"></div>
+                        </div>
+                    </td>
+                    <td id="hairup">&#8594;</td>
+                </tr>
+                <tr>
+                    <th>Body:</th>
+                    <td id="bodydown">&#8592;</td>
+                    <td id="bodyup">&#8594;</td>
+                </tr>
+            </table>
             <div>
                 <textarea id="comment" placeholder="Enter a comment"></textarea>
             </div>
