@@ -206,9 +206,9 @@ Crafty.c('GuestHair', {
   setHair: function(which) {
     var hair;
     if (which < 7) {
-      hair = 'spr_hair_short';
-    } else {
       hair = 'spr_hair_long';
+    } else {
+      hair = 'spr_hair_short';
       which -= 8;
     }
     this.addComponent(hair);

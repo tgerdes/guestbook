@@ -301,51 +301,51 @@ Crafty.scene('Loading', function() {
         }, 0, 0);
         
         Crafty.sprite(48, 96, 'assets/body_m1.png', {
-          spr_guest0:  [0, 0],
+          spr_guest6:  [0, 0],
         }, 0, 0);
       
         Crafty.sprite(48, 96, 'assets/body_m2.png', {
-          spr_guest1:  [0, 0],
+          spr_guest7:  [0, 0],
         }, 0, 0);
       
         Crafty.sprite(48, 96, 'assets/body_m3.png', {
-          spr_guest2:  [0, 0],
+          spr_guest8:  [0, 0],
         }, 0, 0);
       
         Crafty.sprite(48, 96, 'assets/body_m4.png', {
-          spr_guest3:  [0, 0],
+          spr_guest9:  [0, 0],
         }, 0, 0);
 
         Crafty.sprite(48, 96, 'assets/body_m5.png', {
-          spr_guest4:  [0, 0],
-        }, 0, 0);
-
-        Crafty.sprite(48, 96, 'assets/body_m6.png', {
-          spr_guest5:  [0, 0],
-        }, 0, 0);
-
-        Crafty.sprite(48, 96, 'assets/body_f1.png', {
-          spr_guest6:  [0, 0],
-        }, 0, 0);
-
-        Crafty.sprite(48, 96, 'assets/body_f2.png', {
-          spr_guest7:  [0, 0],
-        }, 0, 0);
-
-        Crafty.sprite(48, 96, 'assets/body_f3.png', {
-          spr_guest8:  [0, 0],
-        }, 0, 0);
-
-        Crafty.sprite(48, 96, 'assets/body_f4.png', {
-          spr_guest9:  [0, 0],
-        }, 0, 0);
-      
-        Crafty.sprite(48, 96, 'assets/body_f5.png', {
           spr_guest10:  [0, 0],
         }, 0, 0);
 
-        Crafty.sprite(48, 96, 'assets/body_f6.png', {
+        Crafty.sprite(48, 96, 'assets/body_m6.png', {
           spr_guest11:  [0, 0],
+        }, 0, 0);
+
+        Crafty.sprite(48, 96, 'assets/body_f1.png', {
+          spr_guest0:  [0, 0],
+        }, 0, 0);
+
+        Crafty.sprite(48, 96, 'assets/body_f2.png', {
+          spr_guest1:  [0, 0],
+        }, 0, 0);
+
+        Crafty.sprite(48, 96, 'assets/body_f3.png', {
+          spr_guest2:  [0, 0],
+        }, 0, 0);
+
+        Crafty.sprite(48, 96, 'assets/body_f4.png', {
+          spr_guest3:  [0, 0],
+        }, 0, 0);
+      
+        Crafty.sprite(48, 96, 'assets/body_f5.png', {
+          spr_guest4:  [0, 0],
+        }, 0, 0);
+
+        Crafty.sprite(48, 96, 'assets/body_f6.png', {
+          spr_guest5:  [0, 0],
         }, 0, 0);
         
         Crafty.sprite(48, 96, 'assets/andrew2.png', {
