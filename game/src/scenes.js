@@ -444,7 +444,7 @@ Crafty.scene('Loading', function() {
             var guest = Game.guests.guestViews[position]
               = new GuestView(baseUrl + data[i].image, data[i].comment, data[i].body, data[i].hair);
             var spriteName = 'face' + position;
-            Crafty.face('FaceSprite' + position, guest.fileName, 640, 480);
+            Crafty.face('FaceSprite' + position, guest.fileName, 48, 66);
             Crafty.c(spriteName, {
               myId: position,
               init: function() {
