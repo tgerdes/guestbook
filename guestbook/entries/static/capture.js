@@ -47,7 +47,6 @@
     $(document).on("ready", function() {
         var thumbcanvas = document.createElement('canvas');
         var thumbctx = thumbcanvas.getContext('2d');
-        document.body.appendChild(thumbcanvas);
 
         var video = document.querySelector("video"),
             canvas = document.querySelector("canvas"),
@@ -58,16 +57,16 @@
             body_val = 0;
         ctx.translate(640, 0);
         ctx.scale(-1, 1);
+        thumbcanvas.width = 48;
+        thumbcanvas.height = 66;
+        thumbctx.translate(48, 0);
+        thumbctx.scale(-1, 1);
         function snapshot() {
             ctx.drawImage(video, 0, 0);
-            thumbcanvas.width = 48;
-            thumbcanvas.height = 66;
-            //thumbctx.globalCompositeOperation = 'source-in';
             thumbctx.clearRect(0, 0, 48, 66);
             thumbctx.drawImage(video, 164, 25, 312, 430, 0, 0, 48, 66);
             thumbctx.globalCompositeOperation = 'destination-in';
             drawEllipse(thumbctx, 0, 0, 48, 66);
-            //thumbctx.drawImage(video, 0, 0);
             document.querySelector("#thumb").src = thumbcanvas.toDataURL();
             document.querySelector("#output").src = canvas.toDataURL();
             $("div.capture").hide();
@@ -111,7 +110,8 @@
             $("#sprite-preview").removeClass("back")
         });
         $("#hairdown").on("click", function() { 
-            hair_val = (hair_val - 1) % HAIR_MAX;
+            hair_val = hair_val - 1;
+            if (hair_val < 0) hair_val = HAIR_MAX-1;
             document.querySelector("#preview-hair").className = "hair" + hair_val;
         }).hover(function() {
             $("#sprite-preview").addClass("back")
@@ -123,7 +123,8 @@
             document.querySelector("#preview-body").className = "body" + body_val;
         });
         $("#bodydown").on("click", function() { 
-            body_val = (body_val - 1) % BODY_MAX;
+            body_val = body_val - 1;
+            if (body_val < 0) body_val = BODY_MAX-1;
             document.querySelector("#preview-body").className = "body" + body_val;
         });
     });
