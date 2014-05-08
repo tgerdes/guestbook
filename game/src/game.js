@@ -17,7 +17,7 @@ Game = {
   },
   
   constants: {
-    test: true,
+    test: false,
     tileSet: 0,
     finaleTextDuration: 150,
     textDuration: 250,

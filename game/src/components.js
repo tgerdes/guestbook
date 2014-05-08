@@ -147,7 +147,7 @@ Crafty.c('GuestText', {
       .textColor('#000000')
       .textFont({ size: '18px'})
       .color('rgb(255, 255, 255)')
-      .css({"text-align": "center"});
+      .css({"text-align": "center", "wordWrap" : "break-word"});
       this.visible = false
       this.z = 2;
   },
@@ -162,8 +162,8 @@ Crafty.c('GuestText', {
     var h = 1.2 * this._getFontHeight(size);
     
     if (w > 256) {
+      h = Math.ceil(w / 256) * h;
       w = 256;
-      h = 2 * h;
     }
     this.w = w;
     this.h = h;
@@ -346,8 +346,9 @@ Crafty.c('Guest', {
     if (this.myText._w > 48) {
       xShift = (this.myText._w - 48) / 2;
     }
+    var yShift = this.myText._h - 6;
     
-    this.myText.shift(this.x - xShift, this.y - 24, 0, 0);
+    this.myText.shift(this.x - xShift, this.y - yShift/*this.y - 24*/, 0, 0);
     this.myFace.shift(this.x, this.y, 0, 0);
     this.myHair.shift(this.x, this.y, 0, 0);
     this.myFace.ready = true;
