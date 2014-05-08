@@ -33,10 +33,7 @@
       ctx.bezierCurveTo(xm + ox, y, xe, ym - oy, xe, ym);
       ctx.bezierCurveTo(xe, ym + oy, xm + ox, ye, xm, ye);
       ctx.bezierCurveTo(xm - ox, ye, x, ym + oy, x, ym);
-      ctx.fillStyle = "white";
-      ctx.fill();
-      ctx.closePath();
-      //ctx.stroke();
+      ctx.clip();
     }
 
     navigator.getUserMedia  = navigator.getUserMedia ||
@@ -64,9 +61,8 @@
         function snapshot() {
             ctx.drawImage(video, 0, 0);
             thumbctx.clearRect(0, 0, 48, 66);
-            thumbctx.drawImage(video, 164, 25, 312, 430, 0, 0, 48, 66);
-            thumbctx.globalCompositeOperation = 'destination-in';
             drawEllipse(thumbctx, 0, 0, 48, 66);
+            thumbctx.drawImage(video, 164, 25, 312, 430, 0, 0, 48, 66);
             document.querySelector("#thumb").src = thumbcanvas.toDataURL();
             document.querySelector("#output").src = canvas.toDataURL();
             $("div.capture").hide();
