@@ -85,7 +85,7 @@
             var d = new FormData(),
             xhr = new XMLHttpRequest();
             d.append("image", dataURItoBlob($("#output").attr("src")), "image.png");
-            d.append("thumb", dataURItoBlob($("#thumb").attr("src")), "image.png");
+            d.append("thumb", dataURItoBlob($("#thumb").attr("src")), "thumb.png");
             d.append("comment", $("textarea").val());
             d.append("body", body_val);
             d.append("hair", hair_val);
