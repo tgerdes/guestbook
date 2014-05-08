@@ -101,17 +101,30 @@
         },
         function(err) {
         });
-        $("#hairup").on("click", function() { 
+        $("#hairup").on("click", function(e) { 
             hair_val = (hair_val + 1) % HAIR_MAX;
+            document.querySelector("#preview-hair").className = "hair" + hair_val;
+            e.preventDefault()
+        }).hover(function() {
+            $("#sprite-preview").addClass("back")
+        }, function () {
+            $("#sprite-preview").removeClass("back")
         });
         $("#hairdown").on("click", function() { 
             hair_val = (hair_val - 1) % HAIR_MAX;
+            document.querySelector("#preview-hair").className = "hair" + hair_val;
+        }).hover(function() {
+            $("#sprite-preview").addClass("back")
+        }, function () {
+            $("#sprite-preview").removeClass("back")
         });
         $("#bodyup").on("click", function() { 
             body_val = (body_val + 1) % BODY_MAX;
+            document.querySelector("#preview-body").className = "body" + body_val;
         });
         $("#bodydown").on("click", function() { 
             body_val = (body_val - 1) % BODY_MAX;
+            document.querySelector("#preview-body").className = "body" + body_val;
         });
     });
 })(jQuery);

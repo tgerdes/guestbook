@@ -34,43 +34,39 @@
   to { background-position: -144px 96px; }
 }
 
-div.body {
-    width: 48px;
-    height: 96px;
-    background-position-y: 96px;
-}
-
-div.sprite-preview>div.body {
+#sprite-preview #preview-body {
     -webkit-animation: front_animate .6s steps(3) infinite;
     -moz-animation: front_animate .6s steps(3) infinite;
     -o-animation: front_animate .6s steps(3) infinite;
     animation: front_animate .6s steps(3) infinite;
+    width: 48px;
+    height: 96px;
 }
 
-div.sprite-preview.back>div.body {
+#sprite-preview.back #preview-body {
     -webkit-animation: back_animate .6s steps(3) infinite;
     -moz-animation: back_animate .6s steps(3) infinite;
     -o-animation: back_animate .6s steps(3) infinite;
     animation: back_animate .6s steps(3) infinite;
 }
 
-div.sprite-preview>div.hair {
+#sprite-preview #preview-hair {
     width: 48;
     height: 66;
     display: none;
 }
 
-div.sprite-preview.back>div.hair {
+#sprite-preview.back #preview-hair {
     display: block;
 }
 
-div.sprite-preview>div.face {
+#sprite-preview #thumb {
     width: 48;
     height: 66;
     display: block;
 }
 
-div.sprite-preview.back>div.hair {
+#sprite-preview.back #thumb {
     display: none;
 }
 
@@ -158,16 +154,13 @@ div.hair11 {
     background-image:url(/static/hair_short.png);
     background-position: 0px -330px;
 }
-div.face {
-    width: 48; height: 66;
-}
 
-div.sprite-preview>div,
-div.sprite-preview>img {
+#sprite-preview>div,
+#sprite-preview>img {
     position: absolute;
 }
 
-div.sprite-preview {
+#sprite-preview {
     width: 48px;
     height: 96px;
 }
