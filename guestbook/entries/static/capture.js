@@ -36,28 +36,19 @@
       ctx.clip();
     }
 
-    navigator.getUserMedia  = navigator.getUserMedia ||
-    navigator.webkitGetUserMedia ||
-    navigator.mozGetUserMedia ||
-    navigator.msGetUserMedia;
-
     $(document).on("ready", function() {
         var thumbcanvas = document.createElement('canvas');
         var thumbctx = thumbcanvas.getContext('2d');
 
         var video = document.querySelector("video"),
-            canvas = document.querySelector("canvas"),
+            canvas = document.querySelector("canvas.capture"),
             ctx = canvas.getContext("2d");
         var HAIR_MAX = 12,
             BODY_MAX = 12;
         var hair_val = 0,
             body_val = 0;
-        ctx.translate(640, 0);
-        ctx.scale(-1, 1);
         thumbcanvas.width = 48;
         thumbcanvas.height = 66;
-        thumbctx.translate(48, 0);
-        thumbctx.scale(-1, 1);
         function snapshot() {
             ctx.drawImage(video, 0, 0);
             thumbctx.clearRect(0, 0, 48, 66);
@@ -74,7 +65,6 @@
             $("textarea").val("");
         }
 
-        $(video).on("click", snapshot);
         $("img").on("click", cancel);
         $("#cancel").on("click", cancel);
         $("#submit").on("click", function() {
@@ -91,12 +81,30 @@
             cancel();
         });
 
-        navigator.getUserMedia({video: true}, function(stream) {
-            video.src = window.URL.createObjectURL(stream);
+        compatibility.getUserMedia({video: true}, function(stream) {
+            try {
+                video.src = window.URL.createObjectURL(stream);
+            } catch (error) {
+                video.src = stream;
+            }
+            $(canvas).on("click", snapshot);
+            document.querySelector("div.video-hint").innerHTML = "Click picture to take a snapshot!";
+            compatibility.requestAnimationFrame(tick);
+            ctx.translate(640, 0);
+            ctx.scale(-1, 1);
+            thumbctx.translate(48, 0);
+            thumbctx.scale(-1, 1);
         },
-        function(err) {
+        function(error) {
+            document.querySelector("div.video-hint").innerHTML = "Uh oh, can't access camera";
         });
-        $("#hairup").on("click", function(e) { 
+        function tick() {
+            compatibility.requestAnimationFrame(tick);
+            if (video.readyState === video.HAVE_ENOUGH_DATA) {
+                ctx.drawImage(video, 0, 0);
+            }
+        }
+        $("#hairup").on("click", function(e) {
             hair_val = (hair_val + 1) % HAIR_MAX;
             document.querySelector("#preview-hair").className = "hair" + hair_val;
             e.preventDefault()
@@ -105,7 +113,7 @@
         }, function () {
             $("#sprite-preview").removeClass("back")
         });
-        $("#hairdown").on("click", function() { 
+        $("#hairdown").on("click", function() {
             hair_val = hair_val - 1;
             if (hair_val < 0) hair_val = HAIR_MAX-1;
             document.querySelector("#preview-hair").className = "hair" + hair_val;
@@ -114,11 +122,11 @@
         }, function () {
             $("#sprite-preview").removeClass("back")
         });
-        $("#bodyup").on("click", function() { 
+        $("#bodyup").on("click", function() {
             body_val = (body_val + 1) % BODY_MAX;
             document.querySelector("#preview-body").className = "body" + body_val;
         });
-        $("#bodydown").on("click", function() { 
+        $("#bodydown").on("click", function() {
             body_val = body_val - 1;
             if (body_val < 0) body_val = BODY_MAX-1;
             document.querySelector("#preview-body").className = "body" + body_val;

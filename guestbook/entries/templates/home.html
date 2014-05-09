@@ -4,6 +4,7 @@
 <head>
 <script type="text/javascript" src="//code.jquery.com/jquery-1.10.2.min.js"></script>
 <script type="text/javascript" src="{% static "capture.js" %}"></script>
+<script type="text/javascript" src="{% static "compatibility.js" %}"></script>
 <link type="text/css" rel="stylesheet" href="{% static "capture.css" %}">
 <link type="text/css" rel="stylesheet" href="{% static "sprites.css" %}">
 </head>
@@ -14,7 +15,7 @@
               Please allow access to the camera!
           </div>
           <video autoplay></video>
-          <canvas class="capture" width="640px" height="480px" style="display: none"></canvas>
+          <canvas class="capture" width="640px" height="480px"></canvas>
         </div>
         <div class="preview">
             <div>
