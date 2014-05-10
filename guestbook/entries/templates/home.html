@@ -5,6 +5,7 @@
 <meta name=viewport content="width=640">
 <link type="text/css" rel="stylesheet" href="{% static "capture.css" %}">
 <link type="text/css" rel="stylesheet" href="{% static "sprites.css" %}">
+<link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
 </head>
     <body>
         <div class="content">
@@ -15,6 +16,9 @@
           <form>
               <input class="preview" type="file" accept="image/*" capture="camera" />
           </form>
+          <div class="backup-capture">
+              <i class="fa fa-camera-retro fa-6"></i>
+          </div>
         </div>
         <div class="preview">
             <div>
@@ -32,20 +36,20 @@
                         </div>
                     </td>
                     <td><button id="hairup">&#8594;</button></td>
+                    <td>
+                        <textarea id="comment" placeholder="Enter a comment"></textarea>
+                    </td>
                 </tr>
                 <tr>
                     <th>Body:</th>
                     <td><button id="bodydown">&#8592;</button></td>
                     <td><button id="bodyup">&#8594;</button></td>
+                    <td>
+                        <button id="cancel">Cancel</button>
+                        <button id="submit">Submit</button>
+                    </td>
                 </tr>
             </table>
-            <div>
-                <textarea id="comment" placeholder="Enter a comment"></textarea>
-            </div>
-            <div>
-                <button id="cancel">Cancel</button>
-                <button id="submit">Submit</button>
-            </div>
         </div>
         </div>
     </body>

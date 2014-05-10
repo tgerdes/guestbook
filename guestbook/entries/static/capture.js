@@ -72,6 +72,7 @@
         });
         var hint = document.querySelector("div.video-hint");
         hint.innerHTML = "Allow access to the camera!";
+        fileSel = $("input");
         compatibility.getUserMedia({video: true}, function(stream) {
             try {
                 video.src = window.URL.createObjectURL(stream);
@@ -90,7 +91,12 @@
             }, 500);
         },
         function(error) {
-            document.querySelector("div.video-hint").innerHTML = "Uh oh, can't access camera";
+            document.querySelector("div.video-hint").innerHTML = "Upload a picture from your camera.";
+            $(canvas).hide();
+            $("div.backup-capture").show().on("click", function(e) {
+                e.preventDefault();
+                fileSel.click();
+            } );
         });
         function snapshot() {
             ctx.drawImage(video, 0, 0, 640, 480);
@@ -102,7 +108,6 @@
             $("div.capture").hide();
             $("div.preview").show();
         };
-        fileSel = $("input");
         fileSel.on("change", function (e) {
 
             var file = e.originalEvent.target.files[0];
