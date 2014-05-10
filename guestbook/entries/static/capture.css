@@ -21,11 +21,14 @@ canvas.capture,
 video {
 }
 
-video {
+video,
+#output {
     display: none;
 }
 
 table {
+    width: 100%;
+    zoom: 2.0;
     margin: 0 auto;
 }
 
@@ -35,8 +38,11 @@ div.preview {
 
 textarea {
     margin-top: 10px;
-    height: 32px;
-    width: 450px;
+    font-size: 20pt;
+    height: 64px;
+    padding: 2px;
+    border-width: 1px;
+    width: 634px; /* 640 - 6 */
 }
 
 .backup-capture {
@@ -53,4 +59,15 @@ textarea {
 
 input.preview {
     display: none;
+}
+
+.buttons {
+    margin: 10px 0px; 
+}
+.working {
+    display: none;
+}
+.buttons button {
+    height: 64px;
+    font-size: 20pt;
 }

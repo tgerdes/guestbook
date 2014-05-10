@@ -21,35 +21,26 @@
           </div>
         </div>
         <div class="preview">
-            <div>
-                <img id="output">
+            <img id="output">
+            <div id="sprite-container">
+                <div id="sprite-preview">
+                    <div id="preview-body" class="body0"></div>
+                    <img id="thumb">
+                    <div id="preview-hair" class="hair0"></div>
+                </div>
+                <button id="hairdown">&#8592;</button>
+                <button id="hairup">&#8594;</button>
+                <button id="bodydown">&#8592;</button>
+                <button id="bodyup">&#8594;</button>
             </div>
-            <table>
-                <tr>
-                    <th>Hair:</th>
-                    <td><button id="hairdown">&#8592;</button></td>
-                    <td rowspan="2">
-                        <div id="sprite-preview">
-                            <div id="preview-body" class="body0"></div>
-                            <img id="thumb">
-                            <div id="preview-hair" class="hair0"></div>
-                        </div>
-                    </td>
-                    <td><button id="hairup">&#8594;</button></td>
-                    <td>
-                        <textarea id="comment" placeholder="Enter a comment"></textarea>
-                    </td>
-                </tr>
-                <tr>
-                    <th>Body:</th>
-                    <td><button id="bodydown">&#8592;</button></td>
-                    <td><button id="bodyup">&#8594;</button></td>
-                    <td>
-                        <button id="cancel">Cancel</button>
-                        <button id="submit">Submit</button>
-                    </td>
-                </tr>
-            </table>
+            <textarea id="comment" placeholder="Enter a comment"></textarea>
+            <div class="working">
+                Uploading...
+            </div>
+            <div class="buttons">
+                <button id="cancel">Cancel</button>
+                <button id="submit">Submit</button>
+            </div>
         </div>
         </div>
     </body>

@@ -160,7 +160,36 @@ div.hair11 {
     position: absolute;
 }
 
+#sprite-container {
+    position: relative;
+}
 #sprite-preview {
+    zoom: 4.0;
+    margin: 0px auto;
     width: 48px;
     height: 96px;
 }
+
+#sprite-container button {
+    position: absolute;
+    height: 100px;
+    width: 100px;
+}
+
+#hairup {
+    top: 60px;
+    left: 440px;
+}
+#hairdown {
+    top: 60px;
+    left: 100px;
+}
+#bodyup {
+    top: 260px;
+    left: 440px;
+}
+#bodydown {
+    top: 260px;
+    left: 100px;
+}
+

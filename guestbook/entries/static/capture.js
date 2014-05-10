@@ -59,7 +59,18 @@
         $("#cancel").on("click", cancel);
         $("#submit").on("click", function() {
             var d = new FormData(),
-            xhr = new XMLHttpRequest();
+            xhr = new XMLHttpRequest(),
+            buttons = $(".buttons");
+            working = $(".working");
+            buttons.hide();
+            working.show();
+            xhr.onreadystatechange = function() {
+                if(xhr.readyState == 4) {
+                    cancel();
+                    buttons.show();
+                    working.hide();
+                }
+            }
             d.append("image", dataURItoBlob($("#output").attr("src")), "image.png");
             d.append("thumb", dataURItoBlob($("#thumb").attr("src")), "thumb.png");
             d.append("comment", $("textarea").val());
@@ -67,8 +78,8 @@
             d.append("hair", hair_val);
             xhr.open("post", "/upload", true);
             xhr.setRequestHeader("X-CSRFToken", getCookie("csrftoken"));
+
             xhr.send(d);
-            cancel();
         });
         var hint = document.querySelector("div.video-hint");
         hint.innerHTML = "Allow access to the camera!";
@@ -120,7 +131,7 @@
                         callback: function(data, width, height) {
                             var img = new Image();
                             img.onload = function() {
-                                ctx.drawImage(img, 0, 0);
+                                ctx.drawImage(img, 0, 0, 640, 480);
                                 thumbctx.clearRect(0, 0, 48, 66);
                                 drawEllipse(thumbctx, 0, 0, 48, 66);
                                 thumbctx.drawImage(canvas, 164, 25, 312, 430, 0, 0, 48, 66);
