@@ -49,16 +49,6 @@
             body_val = 0;
         thumbcanvas.width = 48;
         thumbcanvas.height = 66;
-        function snapshot() {
-            ctx.drawImage(video, 0, 0);
-            thumbctx.clearRect(0, 0, 48, 66);
-            drawEllipse(thumbctx, 0, 0, 48, 66);
-            thumbctx.drawImage(video, 164, 25, 312, 430, 0, 0, 48, 66);
-            document.querySelector("#thumb").src = thumbcanvas.toDataURL();
-            document.querySelector("#output").src = canvas.toDataURL();
-            $("div.capture").hide();
-            $("div.preview").show();
-        }
         function cancel() {
             $("div.preview").hide();
             $("div.capture").show();
@@ -80,28 +70,71 @@
             xhr.send(d);
             cancel();
         });
-
+        var hint = document.querySelector("div.video-hint");
+        hint.innerHTML = "Allow access to the camera!";
         compatibility.getUserMedia({video: true}, function(stream) {
             try {
                 video.src = window.URL.createObjectURL(stream);
             } catch (error) {
                 video.src = stream;
             }
-            $(canvas).on("click", snapshot);
-            document.querySelector("div.video-hint").innerHTML = "Click picture to take a snapshot!";
-            compatibility.requestAnimationFrame(tick);
-            ctx.translate(640, 0);
-            ctx.scale(-1, 1);
-            thumbctx.translate(48, 0);
-            thumbctx.scale(-1, 1);
+            setTimeout(function() {
+                video.play();
+                canvas.width = video.videoWidth;
+                canvas.height = video.videoHeight;
+                compatibility.requestAnimationFrame(tick);
+                $(canvas).on("click", snapshot);
+                document.querySelector("div.video-hint").innerHTML = "Click picture to take a snapshot!";
+                ctx.translate(640, 0);
+                ctx.scale(-1, 1);
+            }, 500);
         },
         function(error) {
             document.querySelector("div.video-hint").innerHTML = "Uh oh, can't access camera";
         });
+        function snapshot() {
+            ctx.drawImage(video, 0, 0, 640, 480);
+            thumbctx.clearRect(0, 0, 48, 66);
+            drawEllipse(thumbctx, 0, 0, 48, 66);
+            thumbctx.drawImage(canvas, 164, 25, 312, 430, 0, 0, 48, 66);
+            document.querySelector("#thumb").src = thumbcanvas.toDataURL();
+            document.querySelector("#output").src = canvas.toDataURL();
+            $("div.capture").hide();
+            $("div.preview").show();
+        };
+        fileSel = $("input");
+        fileSel.on("change", function (e) {
+
+            var file = e.originalEvent.target.files[0];
+            $.canvasResize(file, {
+                        width: 640,
+                        height: 480,
+                        crop: true,
+                        quality: 80,
+                        //rotate: 90,
+                        callback: function(data, width, height) {
+                            var img = new Image();
+                            img.onload = function() {
+                                ctx.drawImage(img, 0, 0);
+                                thumbctx.clearRect(0, 0, 48, 66);
+                                drawEllipse(thumbctx, 0, 0, 48, 66);
+                                thumbctx.drawImage(canvas, 164, 25, 312, 430, 0, 0, 48, 66);
+                                document.querySelector("#thumb").src = thumbcanvas.toDataURL();
+                                document.querySelector("#output").src = canvas.toDataURL();
+                                $("div.capture").hide();
+                                $("div.preview").show();
+                            }
+                            img.src = data;
+                        }
+            });
+            e.preventDefault();
+            // Clear the value so the same file can be selected again.
+            //e.originalEvent.target.value = "";
+        });
         function tick() {
             compatibility.requestAnimationFrame(tick);
             if (video.readyState === video.HAVE_ENOUGH_DATA) {
-                ctx.drawImage(video, 0, 0);
+                ctx.drawImage(video, 0, 0, 640, 480);
             }
         }
         $("#hairup").on("click", function(e) {

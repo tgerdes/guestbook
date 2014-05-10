@@ -2,20 +2,19 @@
 {% csrf_token %}
 <html>
 <head>
-<script type="text/javascript" src="//code.jquery.com/jquery-1.10.2.min.js"></script>
-<script type="text/javascript" src="{% static "capture.js" %}"></script>
-<script type="text/javascript" src="{% static "compatibility.js" %}"></script>
+<meta name=viewport content="width=640">
 <link type="text/css" rel="stylesheet" href="{% static "capture.css" %}">
 <link type="text/css" rel="stylesheet" href="{% static "sprites.css" %}">
 </head>
     <body>
         <div class="content">
         <div class="capture">
-          <div class="video-hint">
-              Please allow access to the camera!
-          </div>
+          <div class="video-hint"></div>
           <video autoplay></video>
-          <canvas class="capture" width="640px" height="480px"></canvas>
+          <canvas width="640" height="480" class="capture"></canvas>
+          <form>
+              <input class="preview" type="file" accept="image/*" capture="camera" />
+          </form>
         </div>
         <div class="preview">
             <div>
@@ -50,4 +49,9 @@
         </div>
         </div>
     </body>
+    <script type="text/javascript" src="//code.jquery.com/jquery-1.10.2.min.js"></script>
+    <script type="text/javascript" src="{% static "compatibility.js" %}"></script>
+    <script type="text/javascript" src="{% static "capture.js" %}"></script>
+    <script type="text/javascript" src="{% static "jquery.canvasResize.js" %}"></script>
+    <script type="text/javascript" src="{% static "jquery.exif.js" %}"></script>
 </html>
