@@ -131,7 +131,7 @@
                         callback: function(data, width, height) {
                             var img = new Image();
                             img.onload = function() {
-                                ctx.drawImage(img, 0, 0, 640, 480);
+                                ctx.drawImage(img, 0, 0);
                                 thumbctx.clearRect(0, 0, 48, 66);
                                 drawEllipse(thumbctx, 0, 0, 48, 66);
                                 thumbctx.drawImage(canvas, 164, 25, 312, 430, 0, 0, 48, 66);
