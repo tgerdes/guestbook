@@ -7,3 +7,6 @@ class Message(models.Model):
     comment = models.TextField()
     body = models.IntegerField(default=0, blank=True)
     hair = models.IntegerField(default=0, blank=True)
+
+    def __unicode__(self):
+        return u"<Message: {}>".format(self.comment)
