@@ -43,6 +43,14 @@
         var video = document.querySelector("video"),
             canvas = document.querySelector("canvas.capture"),
             ctx = canvas.getContext("2d");
+        var sx = 0,
+            sy = 0,
+            sw = 640,
+            sh = 480,
+            dx = 0,
+            dy = 0,
+            dw = 640,
+            dh = 480;
         var HAIR_MAX = 12,
             BODY_MAX = 12;
         var hair_val = 0,
@@ -92,8 +100,13 @@
             }
             setTimeout(function() {
                 video.play();
-                canvas.width = video.videoWidth;
-                canvas.height = video.videoHeight;
+                sw = video.videoWidth;
+                sh = video.videoHeight;
+                // letterbox the sides.
+                pw = sw * (480 / sh);
+                dx = (640 - pw) / 2;
+                dw = pw;
+
                 compatibility.requestAnimationFrame(tick);
                 $(canvas).on("click", snapshot);
                 document.querySelector("div.video-hint").innerHTML = "Click picture to take a snapshot!";
@@ -110,7 +123,7 @@
             } );
         });
         function snapshot() {
-            ctx.drawImage(video, 0, 0, 640, 480);
+            ctx.drawImage(video, sx, sy, sw, sh, dx, dy, dw, dh);
             thumbctx.clearRect(0, 0, 48, 66);
             drawEllipse(thumbctx, 0, 0, 48, 66);
             thumbctx.drawImage(canvas, 164, 25, 312, 430, 0, 0, 48, 66);
@@ -150,7 +163,7 @@
         function tick() {
             compatibility.requestAnimationFrame(tick);
             if (video.readyState === video.HAVE_ENOUGH_DATA) {
-                ctx.drawImage(video, 0, 0, 640, 480);
+                ctx.drawImage(video, sx, sy, sw, sh, dx, dy, dw, dh);
             }
         }
         $("#hairup").on("click", function(e) {
