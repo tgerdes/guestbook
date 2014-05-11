@@ -33,7 +33,6 @@
       ctx.bezierCurveTo(xm + ox, y, xe, ym - oy, xe, ym);
       ctx.bezierCurveTo(xe, ym + oy, xm + ox, ye, xm, ye);
       ctx.bezierCurveTo(xm - ox, ye, x, ym + oy, x, ym);
-      ctx.clip();
     }
 
     $(document).on("ready", function() {
@@ -126,6 +125,7 @@
             ctx.drawImage(video, sx, sy, sw, sh, dx, dy, dw, dh);
             thumbctx.clearRect(0, 0, 48, 66);
             drawEllipse(thumbctx, 0, 0, 48, 66);
+            thumbctx.clip();
             thumbctx.drawImage(canvas, 164, 25, 312, 430, 0, 0, 48, 66);
             document.querySelector("#thumb").src = thumbcanvas.toDataURL();
             document.querySelector("#output").src = canvas.toDataURL();
@@ -154,6 +154,7 @@
                                 }
                                 thumbctx.clearRect(0, 0, 48, 66);
                                 drawEllipse(thumbctx, 0, 0, 48, 66);
+                                thumbctx.clip();
                                 thumbctx.drawImage(canvas, 164, 25, 312, 430, 0, 0, 48, 66);
                                 document.querySelector("#thumb").src = thumbcanvas.toDataURL();
                                 document.querySelector("#output").src = canvas.toDataURL();
@@ -170,7 +171,15 @@
         function tick() {
             compatibility.requestAnimationFrame(tick);
             if (video.readyState === video.HAVE_ENOUGH_DATA) {
+                ctx.clearRect(0, 0, 640, 480);
+                ctx.globalAlpha = 0.75;
                 ctx.drawImage(video, sx, sy, sw, sh, dx, dy, dw, dh);
+                drawEllipse(ctx, 164, 25, 312, 430);
+                ctx.save();
+                ctx.clip();
+                ctx.globalAlpha = 1;
+                ctx.drawImage(video, sx, sy, sw, sh, dx, dy, dw, dh);
+                ctx.restore();
             }
         }
         $("#hairup").on("click", function(e) {
