@@ -138,13 +138,20 @@
             $.canvasResize(file, {
                         width: 640,
                         height: 480,
-                        crop: true,
+                        crop: false,
                         quality: 80,
                         //rotate: 90,
                         callback: function(data, width, height) {
                             var img = new Image();
                             img.onload = function() {
-                                ctx.drawImage(img, 0, 0);
+                                ctx.clearRect(0,0, 640, 480);
+                                if (img.height == 480) {
+                                    x = (640 - img.width) / 2;
+                                    ctx.drawImage(img, 0, 0, img.width, img.height, x, 0, img.width, img.height);
+                                } else {
+                                    y = (480 - img.height) / 2;
+                                    ctx.drawImage(img, 0, 0, img.width, img.height, 0, y, img.width, img.height);
+                                }
                                 thumbctx.clearRect(0, 0, 48, 66);
                                 drawEllipse(thumbctx, 0, 0, 48, 66);
                                 thumbctx.drawImage(canvas, 164, 25, 312, 430, 0, 0, 48, 66);
