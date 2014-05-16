@@ -172,7 +172,7 @@
             compatibility.requestAnimationFrame(tick);
             if (video.readyState === video.HAVE_ENOUGH_DATA) {
                 ctx.clearRect(0, 0, 640, 480);
-                ctx.globalAlpha = 0.75;
+                ctx.globalAlpha = 0.5;
                 ctx.drawImage(video, sx, sy, sw, sh, dx, dy, dw, dh);
                 drawEllipse(ctx, 164, 25, 312, 430);
                 ctx.save();

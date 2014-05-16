@@ -1,12 +1,32 @@
+@font-face
+{
+    font-family: banner;
+    src: url(Ribbons-and-banners.ttf);
+}
+
+@font-face
+{
+    font-family: marker;
+    src: url(marker_felt.ttf);
+}
+
+
 body {
    font-size: 20pt; 
+   font-family: marker;
 }
+
 video {
     -moz-transform: scale(-1, 1);
     -webkit-transform: scale(-1, 1);
     -o-transform: scale(-1, 1);
     transform: scale(-1, 1);
     filter: FlipH;
+}
+div.title { 
+    font-family: banner;
+    font-size: 30pt;
+    text-align: center;
 }
 div.video-hint {
     text-align: center;
@@ -17,8 +37,8 @@ div.content {
   margin-right: auto;
 }
 
-canvas.capture,
-video {
+canvas.capture {
+    background: black;
 }
 
 video,
