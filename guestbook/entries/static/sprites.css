@@ -60,13 +60,13 @@
     display: block;
 }
 
-#sprite-preview #thumb {
-    width: 48;
-    height: 66;
+#sprite-preview #thumb-preview {
     display: block;
+    width: 192px;
+    height: 264px;
 }
 
-#sprite-preview.back #thumb {
+#sprite-preview.back #thumb-preview {
     display: none;
 }
 
@@ -164,10 +164,7 @@ div.hair11 {
     position: relative;
 }
 #sprite-preview {
-    zoom: 4.0;
     margin: 0px auto;
-    width: 48px;
-    height: 96px;
 }
 
 #sprite-container button {

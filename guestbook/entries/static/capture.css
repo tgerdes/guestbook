@@ -79,7 +79,8 @@ canvas.capture {
 }
 
 video,
-#output {
+#output,
+#thumb {
     display: none;
 }
 
@@ -89,8 +90,12 @@ video,
 
 #sprite-preview {
     margin: 0 auto;
-    width: 100%;
-    zoom: 2.0;
+    width: 192px;
+    height: 384px;
+}
+
+#sprite-preview>div {
+    zoom: 4.0;
     -moz-transform:  scale(4.0,4.0);
     -moz-transform-origin: top;
 }

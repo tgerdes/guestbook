@@ -36,8 +36,10 @@
     }
 
     $(document).on("ready", function() {
-        var thumbcanvas = document.createElement('canvas');
-        var thumbctx = thumbcanvas.getContext('2d');
+        var thumbcanvas = document.createElement('canvas'),
+            thumbctx = thumbcanvas.getContext('2d');
+        var prev_canvas = document.createElement('canvas'),
+            prev_ctx = prev_canvas.getContext('2d');
 
         var video = document.querySelector("video"),
             canvas = document.querySelector("canvas.capture"),
@@ -56,6 +58,8 @@
             body_val = 0;
         thumbcanvas.width = 48;
         thumbcanvas.height = 66;
+        prev_canvas.width = 48 * 4;
+        prev_canvas.height = 66 * 4;
         function cancel() {
             $("div.success").hide();
             $("div.preview").hide();
@@ -138,6 +142,13 @@
             thumbctx.clip();
             thumbctx.drawImage(canvas, 164, 25, 312, 430, 0, 0, 48, 66);
             document.querySelector("#thumb").src = thumbcanvas.toDataURL();
+
+            prev_ctx.clearRect(0, 0, 48 * 4, 66 * 4);
+            drawEllipse(prev_ctx, 0, 0, 48 * 4, 66 * 4);
+            prev_ctx.clip();
+            prev_ctx.drawImage(canvas, 164, 25, 312, 430, 0, 0, 48 * 4, 66 * 4);
+            document.querySelector("#thumb-preview").src = prev_canvas.toDataURL();
+
             document.querySelector("#output").src = canvas.toDataURL();
             $("div.capture").hide();
             $("div.preview").show();
@@ -167,6 +178,13 @@
                                 thumbctx.clip();
                                 thumbctx.drawImage(canvas, 164, 25, 312, 430, 0, 0, 48, 66);
                                 document.querySelector("#thumb").src = thumbcanvas.toDataURL();
+
+                                prev_ctx.clearRect(0, 0, 48 * 4, 66 * 4);
+                                drawEllipse(prev_ctx, 0, 0, 48 * 4, 66 * 4);
+                                prev_ctx.clip();
+                                prev_ctx.drawImage(canvas, 164, 25, 312, 430, 0, 0, 48 * 4, 66 * 4);
+                                document.querySelector("#thumb-preview").src = prev_canvas.toDataURL();
+
                                 document.querySelector("#output").src = canvas.toDataURL();
                                 $("div.capture").hide();
                                 $("div.preview").show();
