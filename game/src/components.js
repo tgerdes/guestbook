@@ -161,9 +161,10 @@ Crafty.c('GuestText', {
     var size = (this._textFont.size || this.defaultSize);
     var h = 1.2 * this._getFontHeight(size);
     
-    if (w > 256) {
-      h = Math.ceil(w / 256) * h;
-      w = 256;
+    var maxWidth = 312;
+    if (w > maxWidth) {
+      h = Math.ceil(w / maxWidth) * h;
+      w = maxWidth;
     }
     this.w = w;
     this.h = h;
@@ -304,6 +305,8 @@ Crafty.c('Guest', {
   animCb: null,
   xDiff: 0,
   yDiff: 0,
+  xShift: 0,
+  yShift: 0,
   shouldWalk: true,
   animatingMove: false,
   renderCount: 0,
@@ -342,13 +345,13 @@ Crafty.c('Guest', {
     this.myFace.w = 48;
     this.myFace.h = 66;
     
-    var xShift = 0;
+    this.xShift = 0;
     if (this.myText._w > 48) {
-      xShift = (this.myText._w - 48) / 2;
+      this.xShift = (this.myText._w - 48) / 2;
     }
-    var yShift = this.myText._h - 6;
+    this.yShift = this.myText._h - 6;
     
-    this.myText.shift(this.x - xShift, this.y - yShift/*this.y - 24*/, 0, 0);
+    this.myText.shift(this.x - this.xShift, this.y - this.yShift/*this.y - 24*/, 0, 0);
     this.myFace.shift(this.x, this.y, 0, 0);
     this.myHair.shift(this.x, this.y, 0, 0);
     this.myFace.ready = true;
@@ -529,6 +532,20 @@ Crafty.c('Guest', {
   
   showText: function(duration, cb) {
     console.log('showing text ' + this.myText._text + " at " + this.x + ", " + this.y);
+    var x = this.x - this.xShift;
+    var y = this.y - this.yShift;
+    if (x < 0) {
+      x = 0;
+    } else if (x > Game.getViewWidth() - this.myText.w) {
+      x = Game.getViewWidth() - this.myText.w;
+    }
+    if (y < 0) {
+      y = 0;
+    } else if (y > Game.getViewHeight() - this.myText.h) {
+      y = Game.getViewHeight() - this.myText.h;
+    }
+    this.myText.x = x;
+    this.myText.y = y;
     this.myText.start(duration, cb);
   }
 });

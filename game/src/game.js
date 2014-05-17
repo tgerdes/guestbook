@@ -75,7 +75,7 @@ Game = {
   },
   
   guests: {
-    total: 20, // total number of guests that were loaded
+    total: 150, // total number of guests that were loaded
     count: 0, // number of guests currently in the scene
     visited: 0,
     guestViews: new Array(),
