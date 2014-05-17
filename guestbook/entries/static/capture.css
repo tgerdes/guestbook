@@ -12,8 +12,9 @@
 
 
 body {
-   font-size: 20pt; 
+   font-size: 30pt;
    font-family: marker;
+    text-align: center;
 }
 
 video {
@@ -23,14 +24,41 @@ video {
     transform: scale(-1, 1);
     filter: FlipH;
 }
-div.title { 
+
+div.title {
     font-family: banner;
-    font-size: 30pt;
-    text-align: center;
+    font-size: 50pt;
 }
+
+div.intro {
+    background: lightgray;
+    padding: 20px 50px;
+    margin-left: 20px;
+    margin-right: 20px;
+    border-radius:25px;
+    cursor: pointer;
+}
+
+div.intro div {
+    background: white;
+    width: 200px;
+    border-radius:25px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+div.success {
+    background: lightgreen;
+    padding: 20px 50px;
+    margin-left: 20px;
+    margin-right: 20px;
+    border-radius:25px;
+    cursor: pointer;
+}
+
 div.video-hint {
-    text-align: center;
 }
+
 div.content {
   max-width: 640px;
   margin-left: auto;
@@ -46,13 +74,23 @@ video,
     display: none;
 }
 
-table {
-    width: 100%;
-    zoom: 2.0;
-    margin: 0 auto;
+#sprite-container {
+    height: 390px;
 }
 
-div.preview {
+#sprite-preview {
+    margin: 0 auto;
+    width: 100%;
+    zoom: 2.0;
+    -moz-transform:  scale(4.0,4.0);
+    -moz-transform-origin: top;
+}
+
+/* Initially hidden */
+div.capture,
+div.success,
+div.preview,
+.working {
     display: none;
 }
 
@@ -74,7 +112,7 @@ textarea {
 
 .fa-6 {
     align: center;
-    font-size: 20em;
+    font-size: 500px;
 }
 
 input.preview {
@@ -82,11 +120,9 @@ input.preview {
 }
 
 .buttons {
-    margin: 10px 0px; 
+    margin: 10px 0px;
 }
-.working {
-    display: none;
-}
+
 .buttons button {
     height: 64px;
     font-size: 20pt;

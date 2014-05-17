@@ -57,11 +57,12 @@
         thumbcanvas.width = 48;
         thumbcanvas.height = 66;
         function cancel() {
+            $("div.success").hide();
             $("div.preview").hide();
             $("div.capture").show();
             $("textarea").val("");
         }
-
+        $("div.success").on('click', cancel);
         $("img").on("click", cancel);
         $("#cancel").on("click", cancel);
         $("#submit").on("click", function() {
@@ -73,9 +74,10 @@
             working.show();
             xhr.onreadystatechange = function() {
                 if(xhr.readyState == 4) {
-                    cancel();
                     buttons.show();
                     working.hide();
+                    $("div.preview").hide();
+                    $("div.success").show();
                 }
             }
             d.append("image", dataURItoBlob($("#output").attr("src")), "image.png");
@@ -91,35 +93,39 @@
         var hint = document.querySelector("div.video-hint");
         hint.innerHTML = "Allow access to the camera!";
         fileSel = $("input");
-        compatibility.getUserMedia({video: true}, function(stream) {
-            try {
-                video.src = window.URL.createObjectURL(stream);
-            } catch (error) {
-                video.src = stream;
-            }
-            setTimeout(function() {
-                video.play();
-                sw = video.videoWidth;
-                sh = video.videoHeight;
-                // letterbox the sides.
-                pw = sw * (480 / sh);
-                dx = (640 - pw) / 2;
-                dw = pw;
+        $('div.intro').on("click", function() {
+            $('div.intro').hide();
+            $("div.capture").show();
+            compatibility.getUserMedia({video: true}, function(stream) {
+                try {
+                    video.src = window.URL.createObjectURL(stream);
+                } catch (error) {
+                    video.src = stream;
+                }
+                setTimeout(function() {
+                    video.play();
+                    sw = video.videoWidth;
+                    sh = video.videoHeight;
+                    // letterbox the sides.
+                    pw = sw * (480 / sh);
+                    dx = (640 - pw) / 2;
+                    dw = pw;
 
-                compatibility.requestAnimationFrame(tick);
-                $(canvas).on("click", snapshot);
-                document.querySelector("div.video-hint").innerHTML = "Click picture to take a snapshot!";
-                ctx.translate(640, 0);
-                ctx.scale(-1, 1);
-            }, 500);
-        },
-        function(error) {
-            document.querySelector("div.video-hint").innerHTML = "Upload a picture from your camera.";
-            $(canvas).hide();
-            $("div.backup-capture").show().on("click", function(e) {
-                e.preventDefault();
-                fileSel.click();
-            } );
+                    compatibility.requestAnimationFrame(tick);
+                    $(canvas).on("click", snapshot);
+                    document.querySelector("div.video-hint").innerHTML = "Click picture to take a snapshot!";
+                    ctx.translate(640, 0);
+                    ctx.scale(-1, 1);
+                }, 500);
+            },
+            function(error) {
+                document.querySelector("div.video-hint").innerHTML = "Upload a picture from your camera.";
+                $(canvas).hide();
+                $("div.backup-capture").show().on("click", function(e) {
+                    e.preventDefault();
+                    fileSel.click();
+                } );
+            });
         });
         function snapshot() {
             ctx.drawImage(video, sx, sy, sw, sh, dx, dy, dw, dh);
