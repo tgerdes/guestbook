@@ -96,7 +96,7 @@
             }
             d.append("image", dataURItoBlob($("#output").attr("src")), "image.png");
             d.append("thumb", dataURItoBlob($("#thumb").attr("src")), "thumb.png");
-            d.append("comment", $("textarea").val());
+            d.append("comment", $("#comment").val());
             d.append("body", body_val);
             d.append("hair", hair_val);
             xhr.open("post", "/upload", true);
