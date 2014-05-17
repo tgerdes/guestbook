@@ -1,5 +1,7 @@
 from django.db import models
 
+from django.contrib.staticfiles.storage import ManifestStaticFilesStorage
+
 
 class Message(models.Model):
     image = models.ImageField(upload_to="images")
@@ -10,3 +12,7 @@ class Message(models.Model):
 
     def __unicode__(self):
         return u"<Message: {}>".format(self.comment)
+
+
+class CustomStaticFilesStorage(ManifestStaticFilesStorage):
+    patterns = ()
