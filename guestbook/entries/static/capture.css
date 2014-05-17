@@ -56,6 +56,15 @@ div.success {
     cursor: pointer;
 }
 
+div.error {
+    background: IndianRed;
+    padding: 20px 50px;
+    margin-left: 20px;
+    margin-right: 20px;
+    border-radius:25px;
+    cursor: pointer;
+}
+
 div.video-hint {
 }
 
@@ -89,6 +98,7 @@ video,
 /* Initially hidden */
 div.capture,
 div.success,
+div.error,
 div.preview,
 .working {
     display: none;

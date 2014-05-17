@@ -77,7 +77,11 @@
                     buttons.show();
                     working.hide();
                     $("div.preview").hide();
-                    $("div.success").show();
+                    if(xhr.status==200) {
+                        $("div.success").show();
+                    } else {
+                        $("div.error").show();
+                    }
                 }
             }
             d.append("image", dataURItoBlob($("#output").attr("src")), "image.png");
