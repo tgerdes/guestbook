@@ -64,12 +64,18 @@
             $("div.success").hide();
             $("div.preview").hide();
             $("div.capture").show();
-            $("textarea").val("");
+            $("#comment").val("");
         }
         $("div.success").on('click', cancel);
         $("img").on("click", cancel);
-        $("#cancel").on("click", cancel);
-        $("#submit").on("click", function() {
+        $("#cancel").on("click", function(e) {
+            cancel();
+            e.preventDefault();
+        });
+        $("#upload").on("submit", function(e) {
+            e.preventDefault();
+            $("#comment").blur();
+
             var d = new FormData(),
             xhr = new XMLHttpRequest(),
             buttons = $(".buttons");
@@ -100,7 +106,7 @@
         });
         var hint = document.querySelector("div.video-hint");
         hint.innerHTML = "Allow access to the camera!";
-        fileSel = $("input");
+        fileSel = $("#filesel");
         $('div.intro').on("click", function() {
             $('div.intro').hide();
             $("div.capture").show();
@@ -194,7 +200,7 @@
             });
             e.preventDefault();
             // Clear the value so the same file can be selected again.
-            //e.originalEvent.target.value = "";
+            e.originalEvent.target.value = "";
         });
         function tick() {
             compatibility.requestAnimationFrame(tick);
@@ -237,5 +243,8 @@
             if (body_val < 0) body_val = BODY_MAX-1;
             document.querySelector("#preview-body").className = "body" + body_val;
         });
+
+        // Everything is loaded. show OK.
+        $("#ok").show();
     });
 })(jQuery);

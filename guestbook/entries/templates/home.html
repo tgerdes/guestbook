@@ -16,14 +16,14 @@
             <p>Take a picture and leave a message for the newlyweds.</p>
             <p>Your picture will be used in an avatar in the accompanying video game.</p>
             <p>Use the arrows to choose your avatar's hair and clothes.</p>
-            <div>OK</div>
+            <div id="ok">OK</div>
         </div>
         <div class="capture">
           <div class="video-hint"></div>
           <video autoplay></video>
           <canvas width="640" height="480" class="capture"></canvas>
           <form>
-              <input class="preview" type="file" accept="image/*" capture="camera" />
+              <input id="filesel" class="preview" type="file" accept="image/*" capture="camera" />
           </form>
           <div class="backup-capture">
               <i class="fa fa-camera-retro fa-6"></i>
@@ -43,14 +43,16 @@
                 <button id="bodydown"><i class="fa fa-arrow-left fa-5x"></i></button>
                 <button id="bodyup"><i class="fa fa-arrow-right fa-5x"></i></button>
             </div>
-            <textarea id="comment" placeholder="Enter a comment"></textarea>
+            <form id="upload">
             <div class="working">
                 Uploading...
             </div>
             <div class="buttons">
+                <input type="text" id="comment" placeholder="Enter a comment">
+                <button id="send">Submit</button>
                 <button id="cancel">Cancel</button>
-                <button id="submit">Submit</button>
             </div>
+            </form>
         </div>
         <div class="success">
             <p>Success!</p>

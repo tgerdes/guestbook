@@ -39,7 +39,9 @@ div.intro {
     cursor: pointer;
 }
 
+/* hide until JS is setup */
 div.intro div {
+    display: none;
     background: white;
     width: 200px;
     border-radius:25px;
@@ -105,11 +107,11 @@ div.capture,
 div.success,
 div.error,
 div.preview,
-.working {
+div.working {
     display: none;
 }
 
-textarea {
+#comment {
     margin-top: 10px;
     font-size: 20pt;
     height: 64px;
@@ -138,7 +140,11 @@ input.preview {
     margin: 10px 0px;
 }
 
-.buttons button {
+.buttons button,
+.buttons input {
     height: 64px;
+    line-height: 64px;
     font-size: 20pt;
+    border: 2px solid black;
+    padding: 0 20px;
 }
